@@ -1,0 +1,30 @@
+CREATE DATABASE gerenciador;
+
+CREATE TABLE public.projetos (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    descricao TEXT NOT NULL,
+    data_inicio DATE,
+    data_fim DATE
+);
+
+CREATE TABLE public.usuarios (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE public.tarefas (
+    id SERIAL PRIMARY KEY,
+    descricao TEXT NOT NULL,
+    projeto_id INT REFERENCES Projetos(id),
+    data_inicio DATE,
+    data_fim DATE
+);
+
+CREATE TABLE public.atribuicoes (
+   id SERIAL PRIMARY KEY, 
+   usuario_id INT REFERENCES Usuarios(id), 
+   tarefa_id INT REFERENCES Tarefas(id), 
+   data_atribuicao TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
+);
