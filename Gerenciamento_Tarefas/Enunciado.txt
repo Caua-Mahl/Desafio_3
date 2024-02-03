@@ -1,0 +1,45 @@
+Para tirar o sublinhado das plavaras e melhorar a visualização: ctrl+a, botão direito do teclado, spelling, Add all spelling issues to dict..
+
+2 - Desenvolver um sistema básico de gerenciamento de tarefas utilizando PHP, PostgreSQL e programação
+orientada a objetos. O sistema deve permitir o cadastro de usuários, criação de tarefas, atribuição de
+tarefas a usuários e visualização das tarefas atribuídas.
+Passos do Exercício:
+
+- Banco de Dados:
+    - Crie um banco de dados PostgreSQL chamado com nome de sua preferência.
+    - Projete as tabelas necessárias para armazenar informações sobre usuários, tarefas e
+    atribuições.
+
+- Classes PHP:
+    - Crie classes PHP para representar as entidades/tabelas principais do sistema: Usuario,
+    Projetos, Tarefa e Atribuicao.
+    - Implemente métodos para salvar, recuperar e manipular informações no banco de dados
+    para cada uma dessas entidades
+
+- Funcionalidades do Sistema:
+
+    - Cadastro de Usuários:
+        - Implemente a funcionalidade de cadastrar novos
+        usuários no sistema.
+
+    - Criação de Tarefas:
+        - Desenvolva a capacidade de criar novas tarefas, com descrição, data de início e data
+        de término.
+
+    - Visualização de Tarefas Atribuídas:
+        - Crie uma funcionalidade que permite aos usuários visualizar as tarefas atribuídas a
+        eles.
+
+Dicas:
+
+    - Utilize o conceito de programação orientada a objetos para criar classes que representam entidades
+    e seus relacionamentos.
+    
+    - Implemente métodos para interagir com o banco de dados, utilizando prepared statements para
+    prevenir SQL injection.
+
+    - Pode ser útil utilizar uma classe de conexão com o banco de dados para centralizar a lógica de
+    conexão.
+    
+    - Teste o sistema com um script de exemplo que demonstre a criação de usuários, tarefas, atribuições
+e visualização das tarefas atribuídas.
