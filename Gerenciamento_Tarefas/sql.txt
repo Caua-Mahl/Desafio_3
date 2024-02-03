@@ -1,4 +1,6 @@
-CREATE DATABASE gerenciador;
+no DBEAVER: nova conexão porta:5432 host: localhost usuario: postgres e senha: exemplo
+
+os Create table acho que tem que rodar um por vez, no meu tava bugando todos juntos
 
 CREATE TABLE public.projetos (
     id SERIAL PRIMARY KEY,
@@ -17,14 +19,14 @@ CREATE TABLE public.usuarios (
 CREATE TABLE public.tarefas (
     id SERIAL PRIMARY KEY,
     descricao TEXT NOT NULL,
-    projeto_id INT REFERENCES Projetos(id),
+    projeto_id INT REFERENCES projetos(id),
     data_inicio DATE,
     data_fim DATE
 );
 
 CREATE TABLE public.atribuicoes (
    id SERIAL PRIMARY KEY, 
-   usuario_id INT REFERENCES Usuarios(id), 
-   tarefa_id INT REFERENCES Tarefas(id), 
+   usuario_id INT REFERENCES usuarios(id), 
+   tarefa_id INT REFERENCES tarefas(id), 
    data_atribuicao TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
 );
