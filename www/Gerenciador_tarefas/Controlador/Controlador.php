@@ -1,19 +1,22 @@
 <?php 
 class Controlador{
+    private static $conn;
 
     /*- Cadastro de Usuários:
-        - Implemente a funcionalidade de cadastrar novos
-        usuários no sistema.*/
-    public static function cadastrarUsuario(string $nome, string $email, string $senha, string $tipo){
-        $usuario = new Usuario($nome, $email, $senha, $tipo);
-        //$usuario->cadastrar();
+        - Implemente a funcionalidade de cadastrar novos usuários no sistema.*/
+    public static function cadastrarUsuario(string $nome, string $email){
+        $usuario = new Usuario($nome, $email, self::$conn);
+        $usuario->cadastrar();
+        echo "<pre>";
+        var_dump($usuario);
+        echo "<br>";
     }
 
     /*- Criação de Tarefas:
         - Desenvolva a capacidade de criar novas tarefas, com descrição, data de início e data
         de término.*/
     public static function criarTarefa(string $descricao, string $data_inicio, string $data_fim){
-        $tarefa = new Tarefa ($descricao, $data_inicio, $data_fim);
+        $tarefa = new Tarefa ($descricao, $data_inicio, $data_fim, self::$conn);
       //$tarefa->cadastrar();
     }
     
@@ -22,5 +25,10 @@ class Controlador{
         eles.*/
     public static function visualizarTarefasAtribuidas(int $id_usuario){
         //logica
+    }
+
+    //settar variavel estatica
+    public static function setConn($conn){
+        self::$conn = $conn;
     }
 }

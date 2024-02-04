@@ -6,6 +6,6 @@ $conexao = new Conexao("postgres", "5432","trivia","postgres", "exemplo");
 $conexao->conectar();
 $conn= $conexao->getConn();
 
-//nossa lógica
+//nossa logica
 
 $conexao->desconectar();
