@@ -5,11 +5,9 @@ class Controlador{
     /*- Cadastro de Usuários:
         - Implemente a funcionalidade de cadastrar novos usuários no sistema.*/
     public static function cadastrarUsuario(string $nome, string $email){
-        $usuario = new Usuario($nome, $email, self::$conn);
-        $usuario->cadastrar();
-        echo "<pre>";
-        var_dump($usuario);
-        echo "<br>";
+        $dados = Usuario::cadastrar($nome, $email, self::$conn);
+        $usuario= new Usuario($dados["id"], $dados["nome"], $dados["email"], self::$conn);
+        Usuario::setUsuarios($usuario);
     }
 
     /*- Criação de Tarefas:

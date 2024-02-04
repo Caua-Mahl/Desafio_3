@@ -17,4 +17,7 @@ Controlador::setConn($conn); // settar variavel estatica de conexao
 Controlador::cadastrarUsuario("Cauã", "caua@gmail.com");
 Controlador::cadastrarUsuario("Gustavo", "gustavo@gmail.com");
 
+echo "<pre>";
+print_r(Usuario::getUsuarios());
+
 $conexao->desconectar();

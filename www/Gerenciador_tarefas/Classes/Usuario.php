@@ -4,25 +4,26 @@ class Usuario{
     private string $nome;
     private string $email;
     private        $conn;
+    private static array $usuarios = [];
 
-    public function __construct(string $nome, string $email, $conn){
+    public function __construct(int $id, string $nome, string $email, $conn){
+        $this->id    = $id;
         $this->nome  = $nome;
         $this->email = $email;
         $this->conn  = $conn;
     }
 
-    public function cadastrar(){
+    public static function cadastrar(string $nome,string $email, $conn){
         $sql = "INSERT INTO usuarios (nome, email) 
-        VALUES ('$this->nome', '$this->email') RETURNING id";
+        VALUES ('$nome', '$email') RETURNING id, nome, email;";
 
-        $resultado = pg_query($this->conn, $sql); 
+        $resultado = pg_query($conn, $sql); 
 
         if ($resultado === false) {
             die("Error: " . pg_last_error());
         }
 
-        $ultimoId = pg_fetch_array($resultado);
-        $this->id = $ultimoId["id"];   
+        return pg_fetch_array($resultado);
     }
 
     public function getId(): int{
@@ -34,6 +35,13 @@ class Usuario{
     public function getEmail(): string{
         return $this->email;
     }
+    public function getConn(){
+        return $this->conn;
+    }
+    public static function getUsuarios(): array{
+        return self::$usuarios;
+    }
+
     public function setId(int $id): void{
         $this->id = $id;
     }
@@ -43,4 +51,12 @@ class Usuario{
     public function setEmail(string $email): void{
         $this->email = $email;
     }
+    public function setConn($conn): void{
+        $this->conn = $conn;
+    }
+    public static function setUsuarios(object $usuarios): void{
+        self::$usuarios[] = $usuarios;
+
+}
+
 }
