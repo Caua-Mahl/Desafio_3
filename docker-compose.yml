@@ -20,3 +20,5 @@ services:
       - "5432:5432"
 
 #docker compose up -d /// docker compose stop /// docker compose down
+# criar no postgre dois banco de dados, um chamado gerenciador e outro chamado trivia, quando entrar no navegador botar localhost/gerenciador_tarefas ou localhost/trivia.
+```
