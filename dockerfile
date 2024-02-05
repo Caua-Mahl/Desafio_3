@@ -12,5 +12,5 @@ RUN apt-get install -y libpq-dev \
 
 # Extensão CURL
 RUN apt-get install -y \
-    libcurl4-openssl-dev \
-    && docker-php-ext-install -j$(nproc) curl
+  libcurl4-openssl-dev \
+  && docker-php-ext-install -j$(nproc) curl
