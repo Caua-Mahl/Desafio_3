@@ -5,20 +5,23 @@ require "Classes/Projeto.php";
 require "Classes/Tarefa.php";
 require "Classes/Usuario.php";
 require "Classes/Atribuiçao.php";
-require "Controlador/Controlador.php";
 
 
 $conexao = new Conexao("postgres", "5432", "gerenciador", "postgres", "exemplo");
-$conexao->conectar();
-$conn = $conexao->getConn();
+$conn = $conexao->conectar();
 
-// controlador cuida da criação dos objetos e da adição ao db  com suas funções estáticas
-Controlador::setConn($conn); // settar variavel estatica de conexao
-Controlador::cadastrarUsuario("Cauã", "caua@gmail.com");
-Controlador::cadastrarUsuario("Gustavo", "gustavo@gmail.com");
+Usuario::setConn($conn); // dentro da classe conexao criar o set conexao e herdar das outras classes
+
+$usuario1 = new Usuario("5", "cauã", 'cauzin@gmail.com');
+
+print_r($usuario1);
+Usuario::cadastrar_usuario($usuario1);
+
 //Controlador::cadastrarProjeto("Projeto 1","Descriçao do projeto 1 blablabla")
 
 echo "<pre>";
 print_r(Usuario::getUsuarios());
+
+
 
 $conexao->desconectar();

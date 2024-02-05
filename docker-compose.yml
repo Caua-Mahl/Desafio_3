@@ -2,13 +2,13 @@ services:
   php:
     build:
       context: .
-      dockerfile: dockerfile 
+      dockerfile: dockerfile
     ports:
       - "8100:80"
       - "443:443"
     volumes:
       - ./www:/var/www/html
-    links: 
+    links:
       - postgres
   postgres:
     image: postgres:latest
