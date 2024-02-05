@@ -1,0 +1,38 @@
+no DBEAVER: nova conexão porta:8101 host: localhost usuario: postgres e senha: exemplo
+
+os Create table acho que tem que rodar um por vez, no meu tava bugando todos juntos
+
+CREATE TABLE public.perguntas (
+    id SERIAL PRIMARY KEY,
+    dificuldade VARCHAR(20),
+    categoria VARCHAR(50),
+    questao VARCHAR(100),
+    correta VARCHAR(100),
+    erradas text
+);
+
+CREATE TABLE public.usuarios (
+    id SERIAL PRIMARY KEY,
+    token VARCHAR(100)
+);
+
+CREATE TABLE public.quiz (
+    id SERIAL PRIMARY KEY,
+    pergunta1_id INT REFERENCES perguntas(id),
+    pergunta2_id INT REFERENCES perguntas(id),
+    pergunta3_id INT REFERENCES perguntas(id),
+    pergunta4_id INT REFERENCES perguntas(id),
+    pergunta5_id INT REFERENCES perguntas(id)
+);
+
+CREATE TABLE public.tentativa (
+   id SERIAL PRIMARY KEY, 
+   usuario_id INT REFERENCES usuarios(id), 
+   quiz_id INT REFERENCES quiz(id), 
+   resposta_1 VARCHAR(100),
+   resposta_2 VARCHAR(100),
+   resposta_3 VARCHAR(100),
+   resposta_4 VARCHAR(100),
+   resposta_5 VARCHAR(100),
+   acertos INT
+);

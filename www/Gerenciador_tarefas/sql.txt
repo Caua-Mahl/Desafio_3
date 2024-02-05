@@ -1,4 +1,4 @@
-no DBEAVER: nova conexão porta:5432 host: localhost usuario: postgres e senha: exemplo
+no DBEAVER: nova conexão porta:8101 host: localhost usuario: postgres e senha: exemplo
 
 os Create table acho que tem que rodar um por vez, no meu tava bugando todos juntos
 

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 require "Classes/Conexao.php";
 require "Classes/Projeto.php";
@@ -8,14 +8,15 @@ require "Classes/Atribuiçao.php";
 require "Controlador/Controlador.php";
 
 
-$conexao = new Conexao("postgres", "5432","gerenciador","postgres", "exemplo");
+$conexao = new Conexao("postgres", "5432", "gerenciador", "postgres", "exemplo");
 $conexao->conectar();
-$conn= $conexao->getConn();
+$conn = $conexao->getConn();
 
 // controlador cuida da criação dos objetos e da adição ao db  com suas funções estáticas
 Controlador::setConn($conn); // settar variavel estatica de conexao
 Controlador::cadastrarUsuario("Cauã", "caua@gmail.com");
 Controlador::cadastrarUsuario("Gustavo", "gustavo@gmail.com");
+//Controlador::cadastrarProjeto("Projeto 1","Descriçao do projeto 1 blablabla")
 
 echo "<pre>";
 print_r(Usuario::getUsuarios());
