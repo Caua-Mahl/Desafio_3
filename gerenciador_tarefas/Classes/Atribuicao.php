@@ -1,5 +1,7 @@
 <?php
-class Atribuicao
+require "interfaces/iConexao.php";
+
+class Atribuicao implements IConexao
 {
     private int $id;
     private int $tarefa_id;
@@ -88,7 +90,6 @@ class Atribuicao
         }
 
     }
-
     public static function listar_atribuicoes_do_banco()
     {
         $comando_sql = "SELECT * FROM atribuicoes";
@@ -110,5 +111,21 @@ class Atribuicao
             }
         }
     }
+    // public function listar_por_id($conexao, int $id)
+    // {
+    //     $query = "SELECT * FROM funcionarios WHERE id = $id";
+    //     $retorno = pg_query($conexao, $query);
+    //     $linhas = pg_fetch_assoc($retorno);
+
+    //     $funcionario = new Funcionario(0, '', '', 0, 0);
+    //     $funcionario->id = $linhas["id"];
+    //     $funcionario->nome = $linhas["nome"];
+    //     $funcionario->genero = $linhas["genero"];
+    //     $funcionario->idade = $linhas["idade"];
+    //     $funcionario->salario = $linhas["salario"];
+
+    //     return $funcionario;
+
+    // }
 
 }

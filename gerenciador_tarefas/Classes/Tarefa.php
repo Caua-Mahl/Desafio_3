@@ -1,5 +1,7 @@
 <?php
-class Tarefa
+require "interfaces/iConexao.php";
+
+class Tarefa implements IConexao
 {
     private int $id;
     private string $descricao;
@@ -112,4 +114,20 @@ class Tarefa
             }
         }
     }
+    // public function listar_por_id($conexao, int $id)
+    // {
+    //     $query = "SELECT * FROM funcionarios WHERE id = $id";
+    //     $retorno = pg_query($conexao, $query);
+    //     $linhas = pg_fetch_assoc($retorno);
+
+    //     $funcionario = new Funcionario(0, '', '', 0, 0);
+    //     $funcionario->id = $linhas["id"];
+    //     $funcionario->nome = $linhas["nome"];
+    //     $funcionario->genero = $linhas["genero"];
+    //     $funcionario->idade = $linhas["idade"];
+    //     $funcionario->salario = $linhas["salario"];
+
+    //     return $funcionario;
+
+    // }
 }
