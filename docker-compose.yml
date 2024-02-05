@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: dockerfile 
     ports:
-      - "80:80"
+      - "8100:80"
       - "443:443"
     volumes:
       - ./www:/var/www/html
@@ -17,7 +17,7 @@ services:
     environment:
       POSTGRES_PASSWORD: exemplo
     ports:
-      - "5432:5432"
+      - "8101:5432"
 
 #docker compose up -d /// docker compose stop /// docker compose down
 # criar no postgre dois banco de dados, um chamado gerenciador e outro chamado trivia. 
