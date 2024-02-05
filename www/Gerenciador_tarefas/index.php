@@ -23,5 +23,5 @@ echo "<pre>";
 print_r(Usuario::getUsuarios());
 
 
-
+echo"josdihzfpiuhdasf";
 $conexao->desconectar();
