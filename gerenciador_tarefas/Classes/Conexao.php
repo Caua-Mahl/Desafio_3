@@ -85,5 +85,3 @@ class Conexao
         $this->infos_string = $infos_string;
     }
 }
-
-
