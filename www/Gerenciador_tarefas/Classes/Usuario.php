@@ -57,6 +57,8 @@ class Usuario
     public static function cadastrar_usuario(Usuario $usuario){
 
         pg_insert(self::$conn, 'usuarios', (array) $usuario);
+        
+        //ver se tem como retornar o id que o banco gerar para salvar no array
     }
 
 }
