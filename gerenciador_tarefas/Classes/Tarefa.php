@@ -9,7 +9,6 @@ class Tarefa extends Conn
     private int $projeto_id;
     private string $data_inicio;
     private string $data_fim;
-    private static array $tarefas = [];
 
     public function __construct(int $id, string $descricao, int $projeto_id, string $data_inicio, string $data_fim)
     {
@@ -40,10 +39,7 @@ class Tarefa extends Conn
     {
         return $this->data_fim;
     }
-    public static function getTarefas(): array
-    {
-        return self::$tarefas;
-    }
+
     public function setDescricao(string $descricao): void
     {
         $this->descricao = $descricao;
@@ -56,7 +52,7 @@ class Tarefa extends Conn
     {
         $this->data_fim = $data_fim;
     }
-    
+
     public static function tarefa_para_array(Tarefa $tarefa): array
     {
 
@@ -73,15 +69,15 @@ class Tarefa extends Conn
     }
     public static function cadastrar_tarefa(string $descricao, int $projeto_id, string $data_inicio, string $data_fim)
     {
-        $query     = "INSERT INTO tarefas (\"descricao\",\"projeto_id\",\"data_inicio\",\"data_fim\") 
+        $query = "INSERT INTO tarefas (\"descricao\",\"projeto_id\",\"data_inicio\",\"data_fim\") 
                       VALUES ($1, $2, $3, $4) RETURNING id";
         $resultado = pg_query_params(self::$conn, $query, array($descricao, $projeto_id, $data_inicio, $data_fim));
-        
+
         if ($resultado) {
-            $linha           = pg_fetch_row($resultado);
-            $tarefa          = new Tarefa($linha[0], $descricao, $projeto_id, $data_inicio, $data_fim);
-            self::$tarefas[] = $tarefa;
+            $linha = pg_fetch_row($resultado);
+            $tarefa = new Tarefa($linha[0], $descricao, $projeto_id, $data_inicio, $data_fim);
         }
+        return $tarefa;
     }
 
     public static function remover_tarefa(Tarefa $tarefa)
@@ -91,13 +87,6 @@ class Tarefa extends Conn
         $comando_sql = 'DELETE FROM tarefas WHERE id = $1';
         pg_query_params(self::$conn, $comando_sql, (array) $id_tarefa);
 
-        // faz um loop para remover o tarefa do array de tarefas
-        foreach (self::$tarefas as $indice => $tarefa) {
-            if ($tarefa->getId() == $id_tarefa) {
-                unset(self::$tarefas[$indice]);
-                break;
-            }
-        }
     }
     public static function listar_tarefas_do_banco()
     {
@@ -112,27 +101,17 @@ class Tarefa extends Conn
         $comando_sql = "UPDATE tarefas SET descricao = \$2, projeto_id = \$3, data_inicio = \$4, data_fim = \$5 WHERE id = \$1";
         pg_query_params(self::$conn, $comando_sql, $tarefa_convertida);
 
-        foreach (self::$tarefas as $indice => $tarefa) {
-            if ($tarefa->getId() == $tarefa_convertida['id']) {
-                self::$tarefas[$indice] = $tarefa;
-                break;
-            }
-        }
     }
-    // public function listar_por_id($conexao, int $id)
-    // {
-    //     $query = "SELECT * FROM funcionarios WHERE id = $id";
-    //     $retorno = pg_query($conexao, $query);
-    //     $linhas = pg_fetch_assoc($retorno);
+    public static function retorna_tarefa_por_id(int $id_tarefa)
+    {
 
-    //     $funcionario = new Funcionario(0, '', '', 0, 0);
-    //     $funcionario->id = $linhas["id"];
-    //     $funcionario->nome = $linhas["nome"];
-    //     $funcionario->genero = $linhas["genero"];
-    //     $funcionario->idade = $linhas["idade"];
-    //     $funcionario->salario = $linhas["salario"];
+        $comando_sql = "SELECT * FROM tarefas WHERE id = $1";
+        $resultado = pg_query_params(self::$conn, $comando_sql, (array) $id_tarefa);
+        $linhas = pg_fetch_assoc($resultado);
 
-    //     return $funcionario;
+        $tarefa = new Tarefa($linhas['id'], $linhas['descricao'], $linhas['projeto_id'], $linhas['data_inicio'], $linhas['data_fim']);
+        return $tarefa;
 
-    // }
+    }
+
 }

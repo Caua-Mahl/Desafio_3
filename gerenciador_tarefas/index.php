@@ -8,39 +8,42 @@ require "Classes/Atribuicao.php";
 require_once "Classes/Conn.php";
 
 $conexao = new Conexao("postgres", "5432", "gerenciador", "postgres", "exemplo");
-$conn    = $conexao->conectar();
+$conn = $conexao->conectar();
 
 Conn::set_conn($conn);
 
-Usuario::cadastrar_usuario("caua",    'cauzin@gmail.com');
-Usuario::cadastrar_usuario("gustavo", 'mottinha@gmail.com');
+//TESTES USUARIO
+$usuario1 = Usuario::cadastrar_usuario("caua", 'cauzin@gmail.com');
+$usuario2 = Usuario::cadastrar_usuario("gustavo", 'mottinha@gmail.com');
+//Usuario::remover_usuario($usuarios1);
+$usuario2->setNome('HSDAHSHDSGAF');
+Usuario::atualizar_usuario_no_banco($usuario2);
 
-$usuarios = (Usuario::getUsuarios()); 
+//TESTES PROJETOS
+$projeto1 = Projeto::cadastrar_projeto("teste 1", "testando projeto", "2023-02-10", "2024-03-11");
+$projeto2 = Projeto::cadastrar_projeto("teste 2", "testando projeto", "2023-02-10", "2024-03-11");
+//Projeto::remover_projeto($projeto1);
+$projeto2->setNome("Projeto verão");
+Projeto::atualizar_projeto_no_banco($projetos2);
 
-Usuario::remover_usuario($usuarios[1]);
-$usuarios[0]->setNome('Cauazao');
-Usuario::atualizar_usuario_no_banco($usuarios[0]);
+//TESTES TAREFAS
+$tarefa1 = Tarefa::cadastrar_tarefa('tarefa teste', $projeto1->getId(), "2023-02-10", "2024-03-11");
+$tarefa2 = Tarefa::cadastrar_tarefa('teste tarefa', $projeto2->getId(), "2023-08-11", "2024-12-19");
+Tarefa::remover_tarefa($tarefas1);
+$tarefa2->setDescricao("Tarefa que sobrou");
+Tarefa::atualizar_tarefa_no_banco($tarefa2);
 
-Projeto::cadastrar_projeto( "teste 1", "testando projeto", "2023-02-10", "2024-03-11");
-Projeto::cadastrar_projeto( "teste 2", "testando projeto", "2023-02-10", "2024-03-11");
+//TESTES ATRIBUICOES
+$atribuicao1 = Atribuicao::cadastrar_atribuicao($usuario1->getId(), $tarefa1->getId(), "2024-09-25");
+$atribuicao2 = Atribuicao::cadastrar_atribuicao($usuario2->getId(), $tarefa2->getId(), "2024-09-25");
+Atribuicao::remover_atribuicao($atribuicao1);
+$atribuicao1->setDataAtribuicao("2024-09-09");
+Atribuicao::atualizar_atribuicao_no_banco($atribuicao1);
 
-$projetos = Projeto::getProjetos();
-Projeto::remover_projeto($projetos[1]);
-$projetos[0]->setNome("Projeto verão");
-Projeto::atualizar_projeto_no_banco($projetos[0]);
-
-$projetoid = $projetos[0]->getId();
-Tarefa::cadastrar_tarefa('tarefa teste', $projetoid, "2023-02-10", "2024-03-11");
-Tarefa::cadastrar_tarefa('teste tarefa', $projetoid, "2023-08-11", "2024-12-19");
-
-$tarefas = Tarefa::getTarefas();
-Tarefa::remover_tarefa($tarefas[1]);
-$tarefas[0]->setDescricao("Tarefa que sobrou");
-Tarefa::atualizar_tarefa_no_banco($tarefas[0]);
-
+//TESTES DE PRINTS
 $resultados = Usuario::listar_usuarios_do_banco();
 while ($usuarios_banco = pg_fetch_assoc($resultados)) {
-   echo "<br>ID: {$usuarios_banco['id']}<br> Nome: {$usuarios_banco['nome']}<br>Email: {$usuarios_banco['email']}";
+    echo "<br>ID: {$usuarios_banco['id']}<br> Nome: {$usuarios_banco['nome']}<br>Email: {$usuarios_banco['email']}";
 }
 
 echo "<br>";
@@ -56,16 +59,10 @@ while ($tarefas_banco = pg_fetch_assoc($resultados)) {
     echo "<br>ID: {$tarefas_banco['id']}<br> Descrição: {$tarefas_banco['descricao']}<br>Projeto ID: {$tarefas_banco['projeto_id']}<br>Data Inicio: {$tarefas_banco['data_inicio']}<br>Data Fim: {$tarefas_banco['data_fim']}";
 }
 
-$conexao->DeletarTabelas(); 
+$resultados = Atribuicao::listar_atribuicoes_do_banco();
+while ($atribuicoes_banco = pg_fetch_assoc($resultados)) {
+    echo "<br>ID: {$atribuicoes_banco['id']}<br> Usuario ID: {$atribuicoes_banco['usuario_id']}<br>Tarefa ID: {$atribuicoes_banco['tarefa_id']}<br>Data Atribuição: {$atribuicoes_banco['data_atribuicao']}";
+}
+
+$conexao->DeletarTabelas();
 $conexao->desconectar();
-
-//testes atribuições
-//$atribuicao1 = new Atribuicao(1, 1, 1, "2023-02-10");
-//$atribuicao2 = new Atribuicao(2, 2, 2, "2023-08-11");
-
-//Atribuicao::cadastrar_atribuicao($atribuicao1);
-//Atribuicao::cadastrar_atribuicao($atribuicao2);
-
-//Atribuicao::remover_atribuicao($atribuicao1);
-//$atribuicao1->setDataAtribuicao("2024-09-09");
-//Atribuicao::atualizar_atribuicao_no_banco($atribuicao1);

@@ -9,7 +9,6 @@ class Projeto extends Conn
     private string $descricao;
     private string $data_inicio;
     private string $data_fim;
-    private static array $projetos;
 
     public function __construct(int $id, string $nome, string $descricao, string $data_inicio, string $data_fim)
     {
@@ -39,10 +38,6 @@ class Projeto extends Conn
     public function getDataFim(): string
     {
         return $this->data_fim;
-    }
-    public static function getProjetos(): array
-    {
-        return self::$projetos;
     }
     public function setNome(string $nome): void
     {
@@ -85,8 +80,8 @@ class Projeto extends Conn
         if ($resultado) {
             $linha = pg_fetch_row($resultado);
             $projeto = new Projeto($linha[0], $nome, $descricao, $data_inicio, $data_fim);
-            self::$projetos[] = $projeto;
         }
+        return $projeto;
     }
 
     //recebe um objeto projeto e faz o get do ID para verificar se existe no banco, caso sim exclui do banco e do array de usuarios
@@ -96,13 +91,7 @@ class Projeto extends Conn
         $comando_sql = 'DELETE FROM projetos WHERE id = $1';
         pg_query_params(self::$conn, $comando_sql, (array) $id_projeto);
 
-        // faz um loop para remover o usuario do array de usuarios
-        foreach (self::$projetos as $indice => $projeto) {
-            if ($projeto->getId() == $id_projeto) {
-                unset(self::$projetos[$indice]);
-                break;
-            }
-        }
+
     }
     //comando simples para retornar o resultado do select daa tabela
     public static function listar_projetos_do_banco()
@@ -119,29 +108,16 @@ class Projeto extends Conn
         $comando_sql = "UPDATE projetos SET nome = \$2, descricao = \$3, data_inicio = \$4, data_fim = \$5 WHERE id = \$1";
         pg_query_params(self::$conn, $comando_sql, $projeto_convertido);
 
-        foreach (self::$projetos as $indice => $projeto) {
-            if ($projeto->getId() == $projeto_convertido['id']) {
-                self::$projetos[$indice] = $projeto;
-                break;
-            }
-        }
     }
-    // public function listar_por_id($conexao, int $id)
-    // {
-    //     $query = "SELECT * FROM funcionarios WHERE id = $id";
-    //     $retorno = pg_query($conexao, $query);
-    //     $linhas = pg_fetch_assoc($retorno);
+    public static function retorna_projeto_por_id(int $id_projeto)
+    {
+        $comando_sql = "SELECT * FROM projetos WHERE id = $1";
+        $resultado = pg_query_params(self::$conn, $comando_sql, (array) $id_projeto);
+        $linhas = pg_fetch_assoc($resultado);
 
-    //     $funcionario = new Funcionario(0, '', '', 0, 0);
-    //     $funcionario->id = $linhas["id"];
-    //     $funcionario->nome = $linhas["nome"];
-    //     $funcionario->genero = $linhas["genero"];
-    //     $funcionario->idade = $linhas["idade"];
-    //     $funcionario->salario = $linhas["salario"];
-
-    //     return $funcionario;
-
-    // }
+        $projeto = new Projeto($linhas['id'], $linhas['nome'], $linhas['descricao'], $linhas['data_inicio'], $linhas['data_fim']);
+        return $projeto;
+    }
 
 
 }

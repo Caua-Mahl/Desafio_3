@@ -8,14 +8,12 @@ class Atribuicao extends Conn
     private int $tarefa_id;
     private int $usuario_id;
     private string $data_atribuicao;
-    private static array $array_atribuicoes = [];
 
-
-    public function __construct(int $id, int $tarefa_id, int $usuario_id, string $data_atribuicao)
+    public function __construct(int $id, int $usuario_id, int $tarefa_id, string $data_atribuicao)
     {
         $this->id = $id;
-        $this->tarefa_id = $tarefa_id;
         $this->usuario_id = $usuario_id;
+        $this->tarefa_id = $tarefa_id;
         $this->data_atribuicao = $data_atribuicao;
     }
 
@@ -63,12 +61,17 @@ class Atribuicao extends Conn
 
         return $atribuicao_array;
     }
-    public static function cadastrar_atribuicao(Atribuicao $atribuicao)
+    public static function cadastrar_atribuicao(int $usuario_id, int $tarefa_id, string $data_atribuicao)
     {
-        self::$array_atribuicoes[] = $atribuicao;
-        pg_insert(self::$conn, 'atribuicoes', atribuicao::atribuicao_para_array($atribuicao));
+        $query = "INSERT INTO atribuicoes (\"usuario_id\",\"tarefa_id\",\"data_atribuicao\") 
+                      VALUES ($1, $2, $3) RETURNING id";
+        $resultado = pg_query_params(self::$conn, $query, array($usuario_id, $tarefa_id, $data_atribuicao));
 
-        //ver se tem como retornar o id que o banco gerar para salvar no array
+        if ($resultado) {
+            $linha = pg_fetch_row($resultado);
+            $atribuicao = new Atribuicao($linha[0], $usuario_id, $tarefa_id, $data_atribuicao);
+        }
+        return $atribuicao;
     }
     public static function remover_atribuicao(Atribuicao $atribuicao)
     {
@@ -76,14 +79,6 @@ class Atribuicao extends Conn
         $id_atribuicao = $atribuicao->getId();
         $comando_sql = 'DELETE FROM atribuicoes WHERE id = $1';
         pg_query_params(self::$conn, $comando_sql, (array) $id_atribuicao);
-
-        // faz um loop para remover o atribuicao do array de atribuicaos
-        foreach (self::$array_atribuicoes as $indice => $atribuicao) {
-            if ($atribuicao->getId() == $id_atribuicao) {
-                unset(self::$array_atribuicoes[$indice]);
-                break;
-            }
-        }
 
     }
     public static function listar_atribuicoes_do_banco()
@@ -100,28 +95,17 @@ class Atribuicao extends Conn
         $comando_sql = "UPDATE atribuicoes SET tarefa_id = \$2, usuario_id = \$3, data_atribuicao = \$4 WHERE id = \$1";
         pg_query_params(self::$conn, $comando_sql, $atribuicao_convertido);
 
-        foreach (self::$array_atribuicoes as $indice => $atribuicao) {
-            if ($atribuicao->getId() == $atribuicao_convertido['id']) {
-                self::$array_atribuicoes[$indice] = $atribuicao;
-                break;
-            }
-        }
     }
-    // public function listar_por_id($conexao, int $id)
-    // {
-    //     $query = "SELECT * FROM funcionarios WHERE id = $id";
-    //     $retorno = pg_query($conexao, $query);
-    //     $linhas = pg_fetch_assoc($retorno);
+    public static function retorna_atribuicao_por_id(int $id_atribuicao)
+    {
 
-    //     $funcionario = new Funcionario(0, '', '', 0, 0);
-    //     $funcionario->id = $linhas["id"];
-    //     $funcionario->nome = $linhas["nome"];
-    //     $funcionario->genero = $linhas["genero"];
-    //     $funcionario->idade = $linhas["idade"];
-    //     $funcionario->salario = $linhas["salario"];
+        $comando_sql = "SELECT * FROM atribuicoes WHERE id = $1";
+        $resultado = pg_query_params(self::$conn, $comando_sql, (array) $id_atribuicao);
+        $linhas = pg_fetch_assoc($resultado);
 
-    //     return $funcionario;
+        $atribuicao = new Atribuicao($linhas['id'], $linhas['usuario_id'], $linhas['tarefa_id'], $linhas['data_atribuicao']);
+        return $atribuicao;
 
-    // }
+    }
 
 }

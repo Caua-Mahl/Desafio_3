@@ -2,7 +2,8 @@
 
 require_once "Conn.php";
 
-class Usuario extends Conn{
+class Usuario extends Conn
+{
     private int $id;
     private string $nome;
     private string $email;
@@ -26,11 +27,6 @@ class Usuario extends Conn{
     public function getEmail(): string
     {
         return $this->email;
-    }
-
-    public static function getUsuarios(): array
-    {
-        return self::$usuarios;
     }
 
     public function setId(int $id): void
@@ -59,16 +55,17 @@ class Usuario extends Conn{
         return $usuario_array;
     }
 
-    public static function cadastrar_usuario(string $nome, string $email){
-        $query     = "INSERT INTO usuarios (\"nome\",\"email\") 
+    public static function cadastrar_usuario(string $nome, string $email)
+    {
+        $query = "INSERT INTO usuarios (\"nome\",\"email\") 
                       VALUES ($1, $2) RETURNING id";
         $resultado = pg_query_params(self::$conn, $query, array($nome, $email));
-        
+
         if ($resultado) {
-            $linha            = pg_fetch_row($resultado);
-            $usuario          = new Usuario($linha[0], $nome, $email);
-            self::$usuarios[] = $usuario;
+            $linha = pg_fetch_row($resultado);
+            $usuario = new Usuario($linha[0], $nome, $email);
         }
+        return $usuario;
     }
 
     public static function remover_usuario(Usuario $usuario)
@@ -77,14 +74,6 @@ class Usuario extends Conn{
         $id_usuario = $usuario->getId();
         $comando_sql = 'DELETE FROM usuarios WHERE id = $1';
         pg_query_params(self::$conn, $comando_sql, (array) $id_usuario);
-
-        // faz um loop para remover o usuario do array de usuarios
-        foreach (self::$usuarios as $indice => $usuario) {
-            if ($usuario->getId() == $id_usuario) {
-                unset(self::$usuarios[$indice]);
-                break;
-            }
-        }
 
     }
     //apenas um comando simples q retorna o resutlado da consulta no banco de dados
@@ -103,27 +92,17 @@ class Usuario extends Conn{
         $comando_sql = "UPDATE usuarios SET nome = \$2, email = \$3 WHERE id = \$1";
         pg_query_params(self::$conn, $comando_sql, $usuario_convertido);
 
-        foreach (self::$usuarios as $indice => $usuario) {
-            if ($usuario->getId() == $usuario_convertido['id']) {
-                self::$usuarios[$indice] = $usuario;
-                break;
-            }
-        }
     }
-    // public function listar_por_id($conexao, int $id)
-    // {
-    //     $query = "SELECT * FROM funcionarios WHERE id = $id";
-    //     $retorno = pg_query($conexao, $query);
-    //     $linhas = pg_fetch_assoc($retorno);
+    public static function retorna_usuario_por_id(int $id_usuario)
+    {
 
-    //     $funcionario = new Funcionario(0, '', '', 0, 0);
-    //     $funcionario->id = $linhas["id"];
-    //     $funcionario->nome = $linhas["nome"];
-    //     $funcionario->genero = $linhas["genero"];
-    //     $funcionario->idade = $linhas["idade"];
-    //     $funcionario->salario = $linhas["salario"];
+        $comando_sql = "SELECT * FROM usuarios WHERE id = $1";
 
-    //     return $funcionario;
+        $resultado = pg_query_params(self::$conn, $comando_sql, (array) $id_usuario);
+        $linhas = pg_fetch_assoc($resultado);
 
-    // }
+        $usuario = new Usuario($linhas['id'], $linhas['nome'], $linhas['email']);
+        return $usuario;
+
+    }
 }
