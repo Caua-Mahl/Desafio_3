@@ -16,28 +16,28 @@ Conn::set_conn($conn);
 $usuario1 = Usuario::cadastrar_usuario("caua", 'cauzin@gmail.com');
 $usuario2 = Usuario::cadastrar_usuario("gustavo", 'mottinha@gmail.com');
 //Usuario::remover_usuario($usuarios1);
-$usuario2->setNome('HSDAHSHDSGAF');
+$usuario2->set_nome('HSDAHSHDSGAF');
 Usuario::atualizar_usuario_no_banco($usuario2);
 
 //TESTES PROJETOS
 $projeto1 = Projeto::cadastrar_projeto("teste 1", "testando projeto", "2023-02-10", "2024-03-11");
 $projeto2 = Projeto::cadastrar_projeto("teste 2", "testando projeto", "2023-02-10", "2024-03-11");
 //Projeto::remover_projeto($projeto1);
-$projeto2->setNome("Projeto verão");
+$projeto2->set_nome("Projeto verão");
 Projeto::atualizar_projeto_no_banco($projeto2);
 
 //TESTES TAREFAS
-$tarefa1 = Tarefa::cadastrar_tarefa('tarefa teste', $projeto1->getId(), "2023-02-10", "2024-03-11");
-$tarefa2 = Tarefa::cadastrar_tarefa('teste tarefa', $projeto2->getId(), "2023-08-11", "2024-12-19");
+$tarefa1 = Tarefa::cadastrar_tarefa('tarefa teste', $projeto1->get_id(), "2023-02-10", "2024-03-11");
+$tarefa2 = Tarefa::cadastrar_tarefa('teste tarefa', $projeto2->get_id(), "2023-08-11", "2024-12-19");
 //Tarefa::remover_tarefa($tarefa1);
-$tarefa2->setDescricao("Tarefa que sobrou");
+$tarefa2->set_descricao("Tarefa que sobrou");
 Tarefa::atualizar_tarefa_no_banco($tarefa2);
 
 //TESTES ATRIBUICOES
-$atribuicao1 = Atribuicao::cadastrar_atribuicao($usuario1->getId(), $tarefa1->getId(), "2024-09-25");
-$atribuicao2 = Atribuicao::cadastrar_atribuicao($usuario2->getId(), $tarefa2->getId(), "2024-09-25");
-Atribuicao::remover_atribuicao($atribuicao2);
-$atribuicao1->setDataAtribuicao("2024-09-20");
+$atribuicao1 = Atribuicao::cadastrar_atribuicao($usuario1->get_id(), $tarefa1->get_id(), "2024-09-25");
+$atribuicao2 = Atribuicao::cadastrar_atribuicao($usuario2->get_id(), $tarefa2->get_id(), "2024-09-25");
+//Atribuicao::remover_atribuicao($atribuicao2);
+$atribuicao1->set_data_atribuicao("2024-09-20");
 Atribuicao::atualizar_atribuicao_no_banco($atribuicao1);
 
 echo "<br>";
@@ -80,6 +80,14 @@ while ($atribuicoes_banco = pg_fetch_assoc($resultados)) {
     echo "<br>";
 
 }
+echo "<br>";
+echo "<h2>Lista de atribuições por usuario</h2>";
 
-//$conexao->DeletarTabelas();
+$resultados = Atribuicao::visualiza_atribuicao_por_usuario($usuario1);
+while ($atribuicoes_banco = pg_fetch_assoc($resultados)) {
+    echo "<br>ID da atribuição: {$atribuicoes_banco['id']}<br> Usuario ID: {$atribuicoes_banco['usuario_id']}<br>Tarefa ID: {$atribuicoes_banco['tarefa_id']}<br>Data Atribuição: {$atribuicoes_banco['data_atribuicao']}";
+    echo "<br>";
+}
+
+$conexao->deletar_tabelas();
 $conexao->desconectar();

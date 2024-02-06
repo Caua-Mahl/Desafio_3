@@ -17,35 +17,35 @@ class Atribuicao extends Conn
         $this->data_atribuicao = $data_atribuicao;
     }
 
-    public function getId(): int
+    public function get_id(): int
     {
         return $this->id;
     }
-    public function getTarefaId(): int
+    public function get_tarefa_id(): int
     {
         return $this->tarefa_id;
     }
-    public function getUsuarioId(): int
+    public function get_usuario_id(): int
     {
         return $this->usuario_id;
     }
-    public function getDataAtribuicao(): string
+    public function get_data_atribuicao(): string
     {
         return $this->data_atribuicao;
     }
-    public function setId(int $id): void
+    public function set_id(int $id): void
     {
         $this->id = $id;
     }
-    public function setTarefaId(int $tarefa_id): void
+    public function set_tarefa_id(int $tarefa_id): void
     {
         $this->tarefa_id = $tarefa_id;
     }
-    public function setUsuarioId(int $usuario_id): void
+    public function set_usuario_id(int $usuario_id): void
     {
         $this->usuario_id = $usuario_id;
     }
-    public function setDataAtribuicao(string $data_atribuicao): void
+    public function set_data_atribuicao(string $data_atribuicao): void
     {
         $this->data_atribuicao = $data_atribuicao;
     }
@@ -53,10 +53,10 @@ class Atribuicao extends Conn
     {
 
         $atribuicao_array = array(
-            'id' => $atribuicao->getId(),
-            'usuario_id' => $atribuicao->getUsuarioId(),
-            'tarefa_id' => $atribuicao->getTarefaId(),
-            'data_atribuicao' => $atribuicao->getDataAtribuicao()
+            'id' => $atribuicao->get_id(),
+            'usuario_id' => $atribuicao->get_usuario_id(),
+            'tarefa_id' => $atribuicao->get_tarefa_id(),
+            'data_atribuicao' => $atribuicao->get_data_atribuicao()
         );
 
         return $atribuicao_array;
@@ -76,7 +76,7 @@ class Atribuicao extends Conn
     public static function remover_atribuicao(Atribuicao $atribuicao)
     {
 
-        $id_atribuicao = $atribuicao->getId();
+        $id_atribuicao = $atribuicao->get_id();
         $comando_sql = 'DELETE FROM atribuicoes WHERE id = $1';
         pg_query_params(self::$conn, $comando_sql, (array) $id_atribuicao);
 
@@ -107,5 +107,15 @@ class Atribuicao extends Conn
         return $atribuicao;
 
     }
+    public static function visualiza_atribuicao_por_usuario(Usuario $usuario)
+    {
+        $id_usuario = $usuario->get_id();
+        $comando_sql = "SELECT * FROM atribuicoes a  INNER JOIN tarefas t ON a.tarefa_id = t.id WHERE a.usuario_id = $1";
+
+        $resultado = pg_query_params(self::$conn, $comando_sql, (array) $id_usuario);
+        return $resultado;
+    }
+
+
 
 }

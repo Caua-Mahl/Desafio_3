@@ -16,28 +16,28 @@ class Usuario extends Conn
         $this->email = $email;
 
     }
-    public function getId(): int
+    public function get_id(): int
     {
         return $this->id;
     }
-    public function getNome(): string
+    public function get_nome(): string
     {
         return $this->nome;
     }
-    public function getEmail(): string
+    public function get_email(): string
     {
         return $this->email;
     }
 
-    public function setId(int $id): void
+    public function set_id(int $id): void
     {
         $this->id = $id;
     }
-    public function setNome(string $nome): void
+    public function set_nome(string $nome): void
     {
         $this->nome = $nome;
     }
-    public function setEmail(string $email): void
+    public function set_email(string $email): void
     {
         $this->email = $email;
     }
@@ -47,9 +47,9 @@ class Usuario extends Conn
     {
 
         $usuario_array = array(
-            'id' => $usuario->getId(),
-            'nome' => $usuario->getNome(),
-            'email' => $usuario->getEmail()
+            'id' => $usuario->get_id(),
+            'nome' => $usuario->get_nome(),
+            'email' => $usuario->get_email()
         );
 
         return $usuario_array;
@@ -71,7 +71,7 @@ class Usuario extends Conn
     public static function remover_usuario(Usuario $usuario)
     {
 
-        $id_usuario = $usuario->getId();
+        $id_usuario = $usuario->get_id();
         $comando_sql = 'DELETE FROM usuarios WHERE id = $1';
         pg_query_params(self::$conn, $comando_sql, (array) $id_usuario);
 
