@@ -46,7 +46,7 @@ echo "<h2>Lista de usuários</h2>";
 //TESTES DE PRINTS
 $resultados = Usuario::listar_usuarios_do_banco();
 while ($usuarios_banco = pg_fetch_assoc($resultados)) {
-    echo "<br>ID: {$usuarios_banco['id']}<br> Nome: {$usuarios_banco['nome']}<br>Email: {$usuarios_banco['email']}";
+    echo "<br>ID do usuário: {$usuarios_banco['id']}<br> Nome: {$usuarios_banco['nome']}<br>Email: {$usuarios_banco['email']}";
     echo "<br>";
 
 }
@@ -56,7 +56,7 @@ echo "<h2>Lista de projetos</h2>";
 
 $resultados = Projeto::listar_projetos_do_banco();
 while ($projetos_banco = pg_fetch_assoc($resultados)) {
-    echo "<br>ID: {$projetos_banco['id']}<br> Nome: {$projetos_banco['nome']}<br>Descrição: {$projetos_banco['descricao']}<br>Data Inicio: {$projetos_banco['data_inicio']}<br>Data Fim: {$projetos_banco['data_fim']}";
+    echo "<br>ID do projeto: {$projetos_banco['id']}<br> Nome: {$projetos_banco['nome']}<br>Descrição: {$projetos_banco['descricao']}<br>Data Inicio: {$projetos_banco['data_inicio']}<br>Data Fim: {$projetos_banco['data_fim']}";
     echo "<br>";
 
 }
@@ -66,7 +66,7 @@ echo "<h2>Lista de tarefas</h2>";
 
 $resultados = Tarefa::listar_tarefas_do_banco();
 while ($tarefas_banco = pg_fetch_assoc($resultados)) {
-    echo "<br>ID: {$tarefas_banco['id']}<br> Descrição: {$tarefas_banco['descricao']}<br>Projeto ID: {$tarefas_banco['projeto_id']}<br>Data Inicio: {$tarefas_banco['data_inicio']}<br>Data Fim: {$tarefas_banco['data_fim']}";
+    echo "<br>ID da tarefa: {$tarefas_banco['id']}<br> Descrição: {$tarefas_banco['descricao']}<br>Projeto ID: {$tarefas_banco['projeto_id']}<br>Data Inicio: {$tarefas_banco['data_inicio']}<br>Data Fim: {$tarefas_banco['data_fim']}";
     echo "<br>";
 
 }
@@ -76,10 +76,10 @@ echo "<h2>Lista de atribuições</h2>";
 
 $resultados = Atribuicao::listar_atribuicoes_do_banco();
 while ($atribuicoes_banco = pg_fetch_assoc($resultados)) {
-    echo "<br>ID: {$atribuicoes_banco['id']}<br> Usuario ID: {$atribuicoes_banco['usuario_id']}<br>Tarefa ID: {$atribuicoes_banco['tarefa_id']}<br>Data Atribuição: {$atribuicoes_banco['data_atribuicao']}";
+    echo "<br>ID da atribuição: {$atribuicoes_banco['id']}<br> Usuario ID: {$atribuicoes_banco['usuario_id']}<br>Tarefa ID: {$atribuicoes_banco['tarefa_id']}<br>Data Atribuição: {$atribuicoes_banco['data_atribuicao']}";
     echo "<br>";
 
 }
 
-$conexao->DeletarTabelas();
+//$conexao->DeletarTabelas();
 $conexao->desconectar();
