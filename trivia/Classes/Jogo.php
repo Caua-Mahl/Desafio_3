@@ -1,6 +1,6 @@
 <?php
 
-require_once "Conn.php";
+require_once "Conexao/Conn.php";
 class Jogo extends Conn
 {
     private int $id;

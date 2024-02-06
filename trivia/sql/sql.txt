@@ -8,7 +8,7 @@ CREATE TABLE public.perguntas (
     erradas VARCHAR(250)
 );
 
-CREATE TABLE public.usuarios (
+CREATE TABLE public.usuario (
     token VARCHAR(255)  PRIMARY KEY,
     nome VARCHAR(255)
 );
