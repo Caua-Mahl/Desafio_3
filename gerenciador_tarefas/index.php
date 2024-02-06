@@ -85,7 +85,7 @@ echo "<h2>Lista de atribuições por usuario</h2>";
 
 $resultados = Atribuicao::visualiza_atribuicao_por_usuario($usuario1);
 while ($atribuicoes_banco = pg_fetch_assoc($resultados)) {
-    echo "<br>ID da atribuição: {$atribuicoes_banco['id']}<br> Usuario ID: {$atribuicoes_banco['usuario_id']}<br>Tarefa ID: {$atribuicoes_banco['tarefa_id']}<br>Data Atribuição: {$atribuicoes_banco['data_atribuicao']}";
+    echo "<br>ID da atribuição: {$atribuicoes_banco['id']}<br> Usuario ID: {$atribuicoes_banco['usuario_id']}<br>Tarefa ID: {$atribuicoes_banco['tarefa_id']}<br>Descrição: {$atribuicoes_banco['descricao']}<br>Data Atribuição: {$atribuicoes_banco['data_atribuicao']}";
     echo "<br>";
 }
 
