@@ -90,5 +90,5 @@ class Pergunta extends Conn
     public function setTipo(string $tipo)
     {
         $this->tipo = $tipo;
-    }   
+    }
 }
