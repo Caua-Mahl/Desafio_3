@@ -10,7 +10,7 @@ CREATE TABLE public.perguntas (
 
 CREATE TABLE public.usuarios (
     id SERIAL PRIMARY KEY,
-    token VARCHAR(125000)
+    token VARCHAR(255)
 );
 
 CREATE TABLE public.jogo (
@@ -23,13 +23,18 @@ CREATE TABLE public.jogo (
 );
 
 CREATE TABLE public.tentativa (
-   id SERIAL PRIMARY KEY, 
-   usuario_id INT REFERENCES usuarios(id), 
-   jogo_id INT REFERENCES jogo(id), 
+    id_usuario INT,
+    id_jogo INT,
+
    resposta_1 VARCHAR(250),
    resposta_2 VARCHAR(250),
    resposta_3 VARCHAR(250),
    resposta_4 VARCHAR(250),
    resposta_5 VARCHAR(250),
-   acertos INT
+   acertos INT,
+   
+    PRIMARY KEY (id_usuario, token_jogo),
+    FOREIGN KEY (id_usuario) REFERENCES Usuario(id), -- Supondo que Usuario é a tabela de entidade forte
+    FOREIGN KEY (token_jogo) REFERENCES Jogo(token)
+
 );
