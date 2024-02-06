@@ -56,7 +56,7 @@ class Tarefa extends Conn
     {
         $this->data_fim = $data_fim;
     }
-    
+
     public static function tarefa_para_array(Tarefa $tarefa): array
     {
 
@@ -73,15 +73,16 @@ class Tarefa extends Conn
     }
     public static function cadastrar_tarefa(string $descricao, int $projeto_id, string $data_inicio, string $data_fim)
     {
-        $query     = "INSERT INTO tarefas (\"descricao\",\"projeto_id\",\"data_inicio\",\"data_fim\") 
+        $query = "INSERT INTO tarefas (\"descricao\",\"projeto_id\",\"data_inicio\",\"data_fim\") 
                       VALUES ($1, $2, $3, $4) RETURNING id";
         $resultado = pg_query_params(self::$conn, $query, array($descricao, $projeto_id, $data_inicio, $data_fim));
-        
+
         if ($resultado) {
-            $linha           = pg_fetch_row($resultado);
-            $tarefa          = new Tarefa($linha[0], $descricao, $projeto_id, $data_inicio, $data_fim);
+            $linha = pg_fetch_row($resultado);
+            $tarefa = new Tarefa($linha[0], $descricao, $projeto_id, $data_inicio, $data_fim);
             self::$tarefas[] = $tarefa;
         }
+        return $tarefa;
     }
 
     public static function remover_tarefa(Tarefa $tarefa)
@@ -119,20 +120,16 @@ class Tarefa extends Conn
             }
         }
     }
-    // public function listar_por_id($conexao, int $id)
-    // {
-    //     $query = "SELECT * FROM funcionarios WHERE id = $id";
-    //     $retorno = pg_query($conexao, $query);
-    //     $linhas = pg_fetch_assoc($retorno);
+    public static function retorna_tarefa_por_id(int $id_tarefa)
+    {
 
-    //     $funcionario = new Funcionario(0, '', '', 0, 0);
-    //     $funcionario->id = $linhas["id"];
-    //     $funcionario->nome = $linhas["nome"];
-    //     $funcionario->genero = $linhas["genero"];
-    //     $funcionario->idade = $linhas["idade"];
-    //     $funcionario->salario = $linhas["salario"];
+        $comando_sql = "SELECT * FROM tarefas WHERE id = $1";
+        $resultado = pg_query_params(self::$conn, $comando_sql, (array) $id_tarefa);
+        $linhas = pg_fetch_assoc($resultado);
 
-    //     return $funcionario;
+        $tarefa = new Tarefa($linhas['id'], $linhas['descricao'], $linhas['projeto_id'], $linhas['data_inicio'], $linhas['data_fim']);
+        return $tarefa;
 
-    // }
+    }
+
 }

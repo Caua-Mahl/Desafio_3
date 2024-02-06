@@ -107,21 +107,16 @@ class Atribuicao extends Conn
             }
         }
     }
-    // public function listar_por_id($conexao, int $id)
-    // {
-    //     $query = "SELECT * FROM funcionarios WHERE id = $id";
-    //     $retorno = pg_query($conexao, $query);
-    //     $linhas = pg_fetch_assoc($retorno);
+    public static function retorna_atribuicao_por_id(int $id_atribuicao)
+    {
 
-    //     $funcionario = new Funcionario(0, '', '', 0, 0);
-    //     $funcionario->id = $linhas["id"];
-    //     $funcionario->nome = $linhas["nome"];
-    //     $funcionario->genero = $linhas["genero"];
-    //     $funcionario->idade = $linhas["idade"];
-    //     $funcionario->salario = $linhas["salario"];
+        $comando_sql = "SELECT * FROM atribuicoes WHERE id = $1";
+        $resultado = pg_query_params(self::$conn, $comando_sql, (array) $id_atribuicao);
+        $linhas = pg_fetch_assoc($resultado);
 
-    //     return $funcionario;
+        $atribuicao = new Atribuicao($linhas['id'], $linhas['usuario_id'], $linhas['tarefa_id'], $linhas['data_atribuicao']);
+        return $atribuicao;
 
-    // }
+    }
 
 }
