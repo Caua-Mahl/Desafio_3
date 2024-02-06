@@ -9,7 +9,6 @@ class Tarefa extends Conn
     private int $projeto_id;
     private string $data_inicio;
     private string $data_fim;
-    private static array $tarefas = [];
 
     public function __construct(int $id, string $descricao, int $projeto_id, string $data_inicio, string $data_fim)
     {
@@ -40,10 +39,7 @@ class Tarefa extends Conn
     {
         return $this->data_fim;
     }
-    public static function getTarefas(): array
-    {
-        return self::$tarefas;
-    }
+
     public function setDescricao(string $descricao): void
     {
         $this->descricao = $descricao;
@@ -80,7 +76,6 @@ class Tarefa extends Conn
         if ($resultado) {
             $linha = pg_fetch_row($resultado);
             $tarefa = new Tarefa($linha[0], $descricao, $projeto_id, $data_inicio, $data_fim);
-            self::$tarefas[] = $tarefa;
         }
         return $tarefa;
     }
@@ -92,13 +87,6 @@ class Tarefa extends Conn
         $comando_sql = 'DELETE FROM tarefas WHERE id = $1';
         pg_query_params(self::$conn, $comando_sql, (array) $id_tarefa);
 
-        // faz um loop para remover o tarefa do array de tarefas
-        foreach (self::$tarefas as $indice => $tarefa) {
-            if ($tarefa->getId() == $id_tarefa) {
-                unset(self::$tarefas[$indice]);
-                break;
-            }
-        }
     }
     public static function listar_tarefas_do_banco()
     {
@@ -113,12 +101,6 @@ class Tarefa extends Conn
         $comando_sql = "UPDATE tarefas SET descricao = \$2, projeto_id = \$3, data_inicio = \$4, data_fim = \$5 WHERE id = \$1";
         pg_query_params(self::$conn, $comando_sql, $tarefa_convertida);
 
-        foreach (self::$tarefas as $indice => $tarefa) {
-            if ($tarefa->getId() == $tarefa_convertida['id']) {
-                self::$tarefas[$indice] = $tarefa;
-                break;
-            }
-        }
     }
     public static function retorna_tarefa_por_id(int $id_tarefa)
     {

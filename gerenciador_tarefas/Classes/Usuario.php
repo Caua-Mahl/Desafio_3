@@ -29,11 +29,6 @@ class Usuario extends Conn
         return $this->email;
     }
 
-    public static function getUsuarios(): array
-    {
-        return self::$usuarios;
-    }
-
     public function setId(int $id): void
     {
         $this->id = $id;
@@ -69,7 +64,6 @@ class Usuario extends Conn
         if ($resultado) {
             $linha = pg_fetch_row($resultado);
             $usuario = new Usuario($linha[0], $nome, $email);
-            self::$usuarios[] = $usuario;
         }
         return $usuario;
     }
@@ -80,14 +74,6 @@ class Usuario extends Conn
         $id_usuario = $usuario->getId();
         $comando_sql = 'DELETE FROM usuarios WHERE id = $1';
         pg_query_params(self::$conn, $comando_sql, (array) $id_usuario);
-
-        // faz um loop para remover o usuario do array de usuarios
-        foreach (self::$usuarios as $indice => $usuario) {
-            if ($usuario->getId() == $id_usuario) {
-                unset(self::$usuarios[$indice]);
-                break;
-            }
-        }
 
     }
     //apenas um comando simples q retorna o resutlado da consulta no banco de dados
@@ -106,12 +92,6 @@ class Usuario extends Conn
         $comando_sql = "UPDATE usuarios SET nome = \$2, email = \$3 WHERE id = \$1";
         pg_query_params(self::$conn, $comando_sql, $usuario_convertido);
 
-        foreach (self::$usuarios as $indice => $usuario) {
-            if ($usuario->getId() == $usuario_convertido['id']) {
-                self::$usuarios[$indice] = $usuario;
-                break;
-            }
-        }
     }
     public static function retorna_usuario_por_id(int $id_usuario)
     {
