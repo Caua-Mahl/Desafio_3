@@ -26,6 +26,22 @@ class Conexao
         return $this->conn;
     }
 
+    public function DeletarTabelas(): void
+    {
+        $resultado = pg_query($this->conn, "SELECT tablename FROM pg_tables WHERE schemaname = 'public'");
+
+        if (!$resultado) {
+            echo "An error occurred.\n";
+            exit;
+        }
+        
+        // Loop through each table and truncate
+        while ($linha = pg_fetch_row($resultado)) {
+            $table = $linha[0];
+            pg_query($this->conn, "TRUNCATE TABLE $table CASCADE");
+        }
+    }
+
     public function desconectar(): void
     {
         pg_close($this->conn) or die("Nao foi possivel desconectar ao Banco de Dados  <br><br>");

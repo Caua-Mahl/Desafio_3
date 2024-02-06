@@ -1,12 +1,12 @@
 <?php
-require "interfaces/iConexao.php";
-class Usuario implements IConexao
-{
+
+require_once "Conn.php";
+
+class Usuario extends Conn{
     private int $id;
     private string $nome;
     private string $email;
     private static array $usuarios = [];
-    private static $conn;
 
     public function __construct(int $id, string $nome, string $email)
     {
@@ -28,7 +28,7 @@ class Usuario implements IConexao
         return $this->email;
     }
 
-    public static function listar_usuarios_do_array(): array
+    public static function getUsuarios(): array
     {
         return self::$usuarios;
     }
@@ -46,17 +46,11 @@ class Usuario implements IConexao
         $this->email = $email;
     }
 
-    public static function set_conn($conn)
-    {
-        self::$conn = $conn;
-    }
-
     //essa função transofrma um objeto usuário em um array e retorna o array com as infos
     public static function usuario_para_array(Usuario $usuario): array
     {
 
         $usuario_array = array(
-            'id' => $usuario->getId(),
             'nome' => $usuario->getNome(),
             'email' => $usuario->getEmail()
         );
@@ -64,16 +58,19 @@ class Usuario implements IConexao
         return $usuario_array;
     }
 
-    //recebe um usuario como parametro, converte para colocar no banco de dados e também adiciona no array de usuarios o usuario antes de ser convertido
-    public static function cadastrar_usuario(Usuario $usuario)
-    {
-        self::$usuarios[] = $usuario;
-        pg_insert(self::$conn, 'usuarios', Usuario::usuario_para_array($usuario));
-
-        //ver se tem como retornar o id que o banco gerar para salvar no array
+    public static function cadastrar_usuario(string $nome, string $email){
+        $query     = "INSERT INTO usuarios (\"nome\",\"email\") 
+                      VALUES ($1, $2) RETURNING id";
+        $resultado = pg_query_params(self::$conn, $query, array($nome, $email));
+        
+        if ($resultado) {
+            $linha            = pg_fetch_row($resultado);
+            $id               = $linha[0];
+            $usuario          = new Usuario($id, $nome, $email);
+            self::$usuarios[] = $usuario;
+        }
     }
-    //essa função recebe o usuário e armazena o valor do id dele em uma variável, depois passa essa variavel para a query e executa o código
-    //talvez se a gente passar o ID do usuario seja mais interessante, pois caso o index não tiver o usuario mas o banco sim, fica impossivel de remover
+
     public static function remover_usuario(Usuario $usuario)
     {
 

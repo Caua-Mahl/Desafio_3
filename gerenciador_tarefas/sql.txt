@@ -1,7 +1,3 @@
-no DBEAVER: nova conexão porta:8101 host: localhost usuario: postgres e senha: exemplo
-
-os Create table acho que tem que rodar um por vez, no meu tava bugando todos juntos
-
 CREATE TABLE public.projetos (
     id SERIAL PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,

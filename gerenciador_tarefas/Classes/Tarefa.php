@@ -1,7 +1,8 @@
 <?php
-require "interfaces/iConexao.php";
 
-class Tarefa implements IConexao
+require_once "Conn.php";
+
+class Tarefa extends Conn
 {
     private int $id;
     private string $descricao;
@@ -9,7 +10,6 @@ class Tarefa implements IConexao
     private string $data_inicio;
     private string $data_fim;
     private static array $array_tarefas = [];
-    private static $conn;
 
     public function __construct(int $id, string $descricao, int $projeto_id, string $data_inicio, string $data_fim)
     {
@@ -52,11 +52,7 @@ class Tarefa implements IConexao
     {
         $this->data_fim = $data_fim;
     }
-    public static function set_conn($conn)
-    {
-        self::$conn = $conn;
-    }
-
+    
     public static function tarefa_para_array(Tarefa $tarefa): array
     {
 

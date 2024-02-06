@@ -1,14 +1,14 @@
 <?php
-require "interfaces/iConexao.php";
 
-class Atribuicao implements IConexao
+require_once "Conn.php";
+
+class Atribuicao extends Conn
 {
     private int $id;
     private int $tarefa_id;
     private int $usuario_id;
     private string $data_atribuicao;
     private static array $array_atribuicoes = [];
-    public static $conn;
 
 
     public function __construct(int $id, int $tarefa_id, int $usuario_id, string $data_atribuicao)
@@ -50,10 +50,6 @@ class Atribuicao implements IConexao
     public function setDataAtribuicao(string $data_atribuicao): void
     {
         $this->data_atribuicao = $data_atribuicao;
-    }
-    public static function set_conn($conn)
-    {
-        self::$conn = $conn;
     }
     public static function atribuicao_para_array(Atribuicao $atribuicao): array
     {

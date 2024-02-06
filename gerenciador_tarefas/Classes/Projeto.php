@@ -1,7 +1,8 @@
 <?php
-require "interfaces/iConexao.php";
 
-class Projeto implements IConexao
+require_once "Conn.php";
+
+class Projeto extends Conn
 {
     private int $id;
     private string $nome;
@@ -9,8 +10,6 @@ class Projeto implements IConexao
     private string $data_inicio;
     private string $data_fim;
     private static array $array_projetos = [];
-    private static $conn;
-
 
     public function __construct(int $id, string $nome, string $descricao, string $data_inicio, string $data_fim)
     {
@@ -56,11 +55,6 @@ class Projeto implements IConexao
     public function setDataFim(string $data_fim): void
     {
         $this->data_fim = $data_fim;
-    }
-
-    public static function set_conn($conn)
-    {
-        self::$conn = $conn;
     }
     //transforma um objeto PROJETO em um array associativo
     public static function projeto_para_array(Projeto $projeto)
