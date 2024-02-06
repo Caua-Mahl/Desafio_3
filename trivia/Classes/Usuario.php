@@ -1,5 +1,7 @@
 <?php 
-    class Usuario {
+
+require_once "Conn.php";
+    class Usuario extends Conn{
         private int $id;
         private string $token;
 

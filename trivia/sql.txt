@@ -1,15 +1,16 @@
 CREATE TABLE public.perguntas (
     id SERIAL PRIMARY KEY,
+    tipo VARCHAR(20),
     dificuldade VARCHAR(20),
-    categoria VARCHAR(50),
-    questao VARCHAR(100),
-    correta VARCHAR(100),
-    erradas text
+    categoria VARCHAR(250),
+    questao VARCHAR(250),
+    correta VARCHAR(250),
+    erradas VARCHAR(250)
 );
 
 CREATE TABLE public.usuarios (
     id SERIAL PRIMARY KEY,
-    token VARCHAR(100)
+    token VARCHAR(125000)
 );
 
 CREATE TABLE public.jogo (
@@ -25,10 +26,10 @@ CREATE TABLE public.tentativa (
    id SERIAL PRIMARY KEY, 
    usuario_id INT REFERENCES usuarios(id), 
    jogo_id INT REFERENCES jogo(id), 
-   resposta_1 VARCHAR(100),
-   resposta_2 VARCHAR(100),
-   resposta_3 VARCHAR(100),
-   resposta_4 VARCHAR(100),
-   resposta_5 VARCHAR(100),
+   resposta_1 VARCHAR(250),
+   resposta_2 VARCHAR(250),
+   resposta_3 VARCHAR(250),
+   resposta_4 VARCHAR(250),
+   resposta_5 VARCHAR(250),
    acertos INT
 );

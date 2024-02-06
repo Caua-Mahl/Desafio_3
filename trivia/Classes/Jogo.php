@@ -1,5 +1,7 @@
 <?php 
-    class Jogo {
+
+require_once "Conn.php";
+    class Jogo  extends Conn{
         private int $id;
         private int $Id_pergunta1;
         private int $Id_pergunta2;
