@@ -1,3 +1,4 @@
+
 CREATE TABLE public.perguntas (
     id SERIAL PRIMARY KEY,
     tipo VARCHAR(20),
@@ -38,3 +39,8 @@ CREATE TABLE public.tentativa (
     FOREIGN KEY (id_jogo) REFERENCES Jogo(id)
 
 );
+select  * from usuario ;
+select  * from perguntas;
+select * from  jogo j ;
+select  * from tentativa t ;
+
