@@ -14,6 +14,7 @@ $conexao->conectar();
 Conn::set_conn($conexao->getConn());
 
 #pegando 5 perguntas da api
+Controlador::usuario();
 Controlador::perguntas();
 
 $conexao->desconectar();

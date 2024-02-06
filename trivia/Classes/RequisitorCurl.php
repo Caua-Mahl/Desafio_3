@@ -3,10 +3,9 @@
 require_once "Conn.php";
 
 class RequisitorCurl {
-    private static $base = 'https://opentdb.com/api.php?amount=5';
 
-    public static function getApi(): array {
-        $ch = curl_init(static::$base);
+    public static function get_api($base): array {
+        $ch = curl_init($base);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($ch);
 

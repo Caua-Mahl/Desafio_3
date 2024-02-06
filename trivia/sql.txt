@@ -34,7 +34,7 @@ CREATE TABLE public.tentativa (
    acertos INT,
    
     PRIMARY KEY (token_usuario, id_jogo),
-    FOREIGN KEY (token_usuario) REFERENCES Usuario(token), -- Supondo que Usuario é a tabela de entidade forte
+    FOREIGN KEY (token_usuario) REFERENCES usuarios(token), -- Supondo que Usuario é a tabela de entidade forte
     FOREIGN KEY (id_jogo) REFERENCES Jogo(id)
 
 );
