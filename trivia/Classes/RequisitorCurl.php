@@ -1,8 +1,10 @@
-
+<?php
 class RequisitorCurl {
+    public static string $token = "https://opentdb.com/api_token.php?command=request";
+    public static string $base = "https://opentdb.com/api.php?amount=5&token=";
 
-    public static function get_api($base): array {
-        $ch = curl_init($base);
+    public static function get_api(): array {
+        $ch = curl_init(self::$base);
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($ch);

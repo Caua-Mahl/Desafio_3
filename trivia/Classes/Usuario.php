@@ -3,10 +3,10 @@
 require_once "Conexao/Conn.php";
 class Usuario extends Conn
 {
-    private string $nome;
     private string $token;
+    private string $nome;
 
-    public function __construct(string $nome, string $token)
+    public function __construct(string $token, string $nome)
     {
         $this->nome = $nome;
         $this->token = $token;

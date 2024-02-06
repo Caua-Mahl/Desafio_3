@@ -89,7 +89,7 @@ class Tentativa extends Conn
     {
         $this->acertos = $acertos;
     }
-    public static function cadastrar_tenativa(string $token_usuario, int $jogo_id, string $resposta_1, string $resposta_2, string $resposta_3, string $resposta_4, string $resposta_5, int $acertos)
+    public static function cadastrar_tentativa(string $token_usuario, int $jogo_id, string $resposta_1, string $resposta_2, string $resposta_3, string $resposta_4, string $resposta_5, int $acertos)
     {
         $query = "INSERT INTO tentativa (\"token_usuario\",\"id_jogo\",\"resposta_1\",\"resposta_2\",\"resposta_3\",\"resposta_4\",\"resposta_5\",\"acertos\") 
                       VALUES ($1, $2, $3, $4, $5, $6,$7,$8)";

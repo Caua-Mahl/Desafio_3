@@ -1,3 +1,4 @@
+
 CREATE TABLE public.perguntas (
     id SERIAL PRIMARY KEY,
     tipo VARCHAR(20),
@@ -8,7 +9,7 @@ CREATE TABLE public.perguntas (
     erradas VARCHAR(250)
 );
 
-CREATE TABLE public.usuarios (
+CREATE TABLE public.usuario (
     token VARCHAR(255)  PRIMARY KEY,
     nome VARCHAR(255)
 );
@@ -34,7 +35,12 @@ CREATE TABLE public.tentativa (
    acertos INT,
    
     PRIMARY KEY (token_usuario, id_jogo),
-    FOREIGN KEY (token_usuario) REFERENCES usuarios(token), -- Supondo que Usuario é a tabela de entidade forte
+    FOREIGN KEY (token_usuario) REFERENCES Usuario(token), -- Supondo que Usuario é a tabela de entidade forte
     FOREIGN KEY (id_jogo) REFERENCES Jogo(id)
 
 );
+select  * from usuario ;
+select  * from perguntas;
+select * from  jogo j ;
+select  * from tentativa t ;
+
