@@ -83,4 +83,22 @@ class Conexao
         pg_close($this->conn) or die("Nao foi possivel desconectar ao Banco de Dados  <br><br>");
         echo "<br> Desconexão bem sucedida";
     }
+    public function deletar_dados_tabelas(): void
+    {
+        $resultado = pg_query($this->conn, "SELECT tablename FROM pg_tables WHERE schemaname = 'public'");
+        if (!$resultado) {
+            echo "An error occurred.\n";
+            exit;
+        }
+        while ($linha = pg_fetch_row($resultado)) {
+            $table = $linha[0];
+            pg_query($this->conn, "TRUNCATE TABLE $table CASCADE");
+        }
+
+        $comando_zerar_ids_perguntas = "SELECT setval('perguntas_id_seq', coalesce(max(id), 1), false) FROM perguntas";
+        $comando_zerar_ids_jogo = "SELECT setval('jogo_id_seq', coalesce(max(id), 1), false) FROM jogo";
+        pg_query($this->conn, $comando_zerar_ids_jogo);
+        pg_query($this->conn, $comando_zerar_ids_perguntas);
+
+    }
 }

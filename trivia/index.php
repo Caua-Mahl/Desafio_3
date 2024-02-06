@@ -19,4 +19,5 @@ Conn::set_conn($conexao->getConn());
 Controlador::get_perguntas();
 Usuario::cadastrar_usuario("Gustavo");
 
+$conexao->deletar_dados_tabelas();
 $conexao->desconectar();
