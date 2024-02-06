@@ -19,36 +19,36 @@ class Tarefa extends Conn
         $this->data_fim = $data_fim;
     }
 
-    public function getId(): int
+    public function get_id(): int
     {
         return $this->id;
     }
-    public function getDescricao(): string
+    public function get_descricao(): string
     {
         return $this->descricao;
     }
-    public function getProjetoId(): int
+    public function get_projeto_id(): int
     {
         return $this->projeto_id;
     }
-    public function getDataInicio(): string
+    public function get_data_inicio(): string
     {
         return $this->data_inicio;
     }
-    public function getDataFim(): string
+    public function get_data_fim(): string
     {
         return $this->data_fim;
     }
 
-    public function setDescricao(string $descricao): void
+    public function set_descricao(string $descricao): void
     {
         $this->descricao = $descricao;
     }
-    public function setDataInicio(string $data_inicio): void
+    public function set_data_inicio(string $data_inicio): void
     {
         $this->data_inicio = $data_inicio;
     }
-    public function setDataFim(string $data_fim): void
+    public function set_data_fim(string $data_fim): void
     {
         $this->data_fim = $data_fim;
     }
@@ -57,11 +57,11 @@ class Tarefa extends Conn
     {
 
         $tarefa_array = array(
-            'id' => $tarefa->getId(),
-            'descricao' => $tarefa->getDescricao(),
-            'projeto_id' => $tarefa->getProjetoId(),
-            'data_inicio' => $tarefa->getDataInicio(),
-            'data_fim' => $tarefa->getDataFim(),
+            'id' => $tarefa->get_id(),
+            'descricao' => $tarefa->get_descricao(),
+            'projeto_id' => $tarefa->get_projeto_id(),
+            'data_inicio' => $tarefa->get_data_inicio(),
+            'data_fim' => $tarefa->get_data_fim(),
 
         );
 
@@ -83,7 +83,7 @@ class Tarefa extends Conn
     public static function remover_tarefa(Tarefa $tarefa)
     {
 
-        $id_tarefa = $tarefa->getId();
+        $id_tarefa = $tarefa->get_id();
         $comando_sql = 'DELETE FROM tarefas WHERE id = $1';
         pg_query_params(self::$conn, $comando_sql, (array) $id_tarefa);
 

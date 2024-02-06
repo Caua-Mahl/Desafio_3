@@ -19,39 +19,39 @@ class Projeto extends Conn
         $this->data_fim = $data_fim;
     }
 
-    public function getId(): int
+    public function get_id(): int
     {
         return $this->id;
     }
-    public function getNome(): string
+    public function get_nome(): string
     {
         return $this->nome;
     }
-    public function getDescricao(): string
+    public function get_descricao(): string
     {
         return $this->descricao;
     }
-    public function getDataInicio(): string
+    public function get_data_inicio(): string
     {
         return $this->data_inicio;
     }
-    public function getDataFim(): string
+    public function get_data_fim(): string
     {
         return $this->data_fim;
     }
-    public function setNome(string $nome): void
+    public function set_nome(string $nome): void
     {
         $this->nome = $nome;
     }
-    public function setDescricao(string $descricao): void
+    public function set_descricao(string $descricao): void
     {
         $this->descricao = $descricao;
     }
-    public function setDataInicio(string $data_inicio): void
+    public function set_data_inicio(string $data_inicio): void
     {
         $this->data_inicio = $data_inicio;
     }
-    public function setDataFim(string $data_fim): void
+    public function set_data_fim(string $data_fim): void
     {
         $this->data_fim = $data_fim;
     }
@@ -59,11 +59,11 @@ class Projeto extends Conn
     public static function projeto_para_array(Projeto $projeto)
     {
         $projeto_array = array(
-            'id' => $projeto->getId(),
-            'nome' => $projeto->getNome(),
-            'descricao' => $projeto->getDescricao(),
-            'data_inicio' => $projeto->getDataInicio(),
-            'data_fim' => $projeto->getDataFim()
+            'id' => $projeto->get_id(),
+            'nome' => $projeto->get_nome(),
+            'descricao' => $projeto->get_descricao(),
+            'data_inicio' => $projeto->get_data_inicio(),
+            'data_fim' => $projeto->get_data_fim()
         );
 
         return $projeto_array;
@@ -87,7 +87,7 @@ class Projeto extends Conn
     //recebe um objeto projeto e faz o get do ID para verificar se existe no banco, caso sim exclui do banco e do array de usuarios
     public static function remover_projeto(Projeto $projeto)
     {
-        $id_projeto = $projeto->getId();
+        $id_projeto = $projeto->get_id();
         $comando_sql = 'DELETE FROM projetos WHERE id = $1';
         pg_query_params(self::$conn, $comando_sql, (array) $id_projeto);
 
