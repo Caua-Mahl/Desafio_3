@@ -1,12 +1,13 @@
 <?php
 
+require_once "Classes/RequisitorCurl.php";
+
 class Controlador
 {
-
-    public static function perguntas()
+    public static function get_perguntas()
     {
 
-        $perguntas = RequisitorCurl::get_api("https://opentdb.com/api.php?amount=5");
+        $perguntas = RequisitorCurl::getApi();
         for ($i = 0; $i < 5; $i++) {
             $pergunta = $perguntas["results"][$i];
             $tipo = $pergunta["type"];
@@ -14,6 +15,18 @@ class Controlador
             $categoria = $pergunta["category"];
             $questao = $pergunta["question"];
             $correta = $pergunta["correct_answer"];
+
+            $erradas = implode(", ", $pergunta["incorrect_answers"]); //separa cada resposta errada por vírgula numa string
+            Pergunta::cadastrar_pergunta($tipo, $dificuldade, $categoria, $questao, $correta, $erradas);
+        }
+    }
+    public static function get_token()
+    {
+        $resultados = RequisitorCurl::get_token();
+        return $resultados['token'];
+    }
+}
+
             if ($tipo == "multiple") {
                 $erradas = implode(", ", $pergunta["incorrect_answers"]); //separa cada resposta errada por vírgula numa string
             } else {
@@ -30,3 +43,4 @@ class Controlador
 
     }
 }
+

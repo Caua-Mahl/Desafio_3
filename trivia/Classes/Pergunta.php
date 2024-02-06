@@ -1,6 +1,6 @@
 <?php
 
-require_once "Conn.php";
+require_once "Conexao/Conn.php";
 class Pergunta extends Conn
 {
     private int $id;
@@ -21,20 +21,6 @@ class Pergunta extends Conn
         $this->correta = $correta;
         $this->erradas = $erradas;
     }
-
-    public static function cadastrar_pregunta(string $tipo, string $dificuldade, string $categoria, string $questao, string $correta, string $errada)
-    {
-        $query = "INSERT INTO perguntas (\"tipo\",\"dificuldade\",\"categoria\",\"questao\",\"correta\",\"erradas\") 
-                      VALUES ($1, $2, $3, $4, $5, $6) RETURNING id";
-        $resultado = pg_query_params(self::$conn, $query, array($tipo, $dificuldade, $categoria, $questao, $correta, $errada));
-
-        if ($resultado) {
-            $linha = pg_fetch_row($resultado);
-            $pergunta = new Pergunta($linha[0], $tipo, $dificuldade, $categoria, $questao, $correta, $errada);
-        }
-        return $pergunta;
-    }
-
     public function getId()
     {
         return $this->id;
@@ -90,5 +76,17 @@ class Pergunta extends Conn
     public function setTipo(string $tipo)
     {
         $this->tipo = $tipo;
+    }
+    public static function cadastrar_pergunta(string $tipo, string $dificuldade, string $categoria, string $questao, string $correta, string $errada)
+    {
+        $query = "INSERT INTO perguntas (\"tipo\",\"dificuldade\",\"categoria\",\"questao\",\"correta\",\"erradas\") 
+                      VALUES ($1, $2, $3, $4, $5, $6) RETURNING id";
+        $resultado = pg_query_params(self::$conn, $query, array($tipo, $dificuldade, $categoria, $questao, $correta, $errada));
+
+        if ($resultado) {
+            $linha = pg_fetch_row($resultado);
+            $pergunta = new Pergunta($linha[0], $tipo, $dificuldade, $categoria, $questao, $correta, $errada);
+        }
+        return $pergunta;
     }
 }

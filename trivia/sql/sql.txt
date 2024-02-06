@@ -1,0 +1,46 @@
+
+CREATE TABLE public.perguntas (
+    id SERIAL PRIMARY KEY,
+    tipo VARCHAR(20),
+    dificuldade VARCHAR(20),
+    categoria VARCHAR(250),
+    questao VARCHAR(250),
+    correta VARCHAR(250),
+    erradas VARCHAR(250)
+);
+
+CREATE TABLE public.usuario (
+    token VARCHAR(255)  PRIMARY KEY,
+    nome VARCHAR(255)
+);
+
+CREATE TABLE public.jogo (
+    id SERIAL PRIMARY KEY,
+    pergunta1_id INT REFERENCES perguntas(id),
+    pergunta2_id INT REFERENCES perguntas(id),
+    pergunta3_id INT REFERENCES perguntas(id),
+    pergunta4_id INT REFERENCES perguntas(id),
+    pergunta5_id INT REFERENCES perguntas(id)
+);
+
+CREATE TABLE public.tentativa (
+    token_usuario VARCHAR(255),
+    id_jogo INT,
+
+   resposta_1 VARCHAR(250),
+   resposta_2 VARCHAR(250),
+   resposta_3 VARCHAR(250),
+   resposta_4 VARCHAR(250),
+   resposta_5 VARCHAR(250),
+   acertos INT,
+   
+    PRIMARY KEY (token_usuario, id_jogo),
+    FOREIGN KEY (token_usuario) REFERENCES Usuario(token), -- Supondo que Usuario é a tabela de entidade forte
+    FOREIGN KEY (id_jogo) REFERENCES Jogo(id)
+
+);
+select  * from usuario ;
+select  * from perguntas;
+select * from  jogo j ;
+select  * from tentativa t ;
+
