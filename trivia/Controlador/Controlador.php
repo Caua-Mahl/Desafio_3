@@ -1,6 +1,6 @@
 <?php
+
 require_once "Classes/RequisitorCurl.php";
-require_once "Classes/Pergunta.php";
 
 class Controlador
 {

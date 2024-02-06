@@ -4,7 +4,7 @@ require_once "Conexao/Conn.php";
 class Tentativa extends Conn
 {
     private int $id;
-    private int $usuario_id;
+    private int $token_usuario;
     private int $jogo_id;
     private string $resposta_1;
     private string $resposta_2;
@@ -13,10 +13,10 @@ class Tentativa extends Conn
     private string $resposta_5;
     private int $acertos;
 
-    public function __construct(int $id, int $usuario_id, int $jogo_id, string $resposta_1, string $resposta_2, string $resposta_3, string $resposta_4, string $resposta_5, int $acertos)
+    public function __construct(int $token_usuario, int $jogo_id, string $resposta_1, string $resposta_2, string $resposta_3, string $resposta_4, string $resposta_5, int $acertos)
     {
-        $this->id = $id;
-        $this->usuario_id = $usuario_id;
+
+        $this->token_usuario = $token_usuario;
         $this->jogo_id = $jogo_id;
         $this->resposta_1 = $resposta_1;
         $this->resposta_2 = $resposta_2;
@@ -26,13 +26,9 @@ class Tentativa extends Conn
         $this->acertos = $acertos;
     }
 
-    public function getId()
+    public function gettoken_usuario()
     {
-        return $this->id;
-    }
-    public function getUsuario_id()
-    {
-        return $this->usuario_id;
+        return $this->token_usuario;
     }
     public function getJogo_id()
     {
@@ -62,13 +58,9 @@ class Tentativa extends Conn
     {
         return $this->acertos;
     }
-    public function setId(int $id)
+    public function settoken_usuario(int $token_usuario)
     {
-        $this->id = $id;
-    }
-    public function setUsuario_id(int $usuario_id)
-    {
-        $this->usuario_id = $usuario_id;
+        $this->token_usuario = $token_usuario;
     }
     public function setJogo_id(int $jogo_id)
     {
@@ -97,5 +89,15 @@ class Tentativa extends Conn
     public function setAcertos(int $acertos)
     {
         $this->acertos = $acertos;
+    }
+    public static function cadastrar_tenativa(int $token_usuario, int $jogo_id, string $resposta_1, string $resposta_2, string $resposta_3, string $resposta_4, string $resposta_5, int $acertos)
+    {
+        $query = "INSERT INTO tentativa (\"token_usuario\",\"id_jogo\",\"resposta_1\",\"resposta_2\",\"resposta_3\",\"resposta_4\",\"resposta_5\",\"acertos\") 
+                      VALUES ($1, $2, $3, $4, $5, $6,$7,$8)";
+
+        pg_query_params(self::$conn, $query, array($token_usuario, $jogo_id, $resposta_1, $resposta_2, $resposta_3, $resposta_4, $resposta_5, $acertos));
+        $tentativa = new Tentativa($token_usuario, $jogo_id, $resposta_1, $resposta_2, $resposta_3, $resposta_4, $resposta_5, $acertos);
+
+        return $tentativa;
     }
 }
