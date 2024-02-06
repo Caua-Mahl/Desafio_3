@@ -51,6 +51,7 @@ class Usuario extends Conn{
     {
 
         $usuario_array = array(
+            'id' => $usuario->getId(),
             'nome' => $usuario->getNome(),
             'email' => $usuario->getEmail()
         );
@@ -65,8 +66,7 @@ class Usuario extends Conn{
         
         if ($resultado) {
             $linha            = pg_fetch_row($resultado);
-            $id               = $linha[0];
-            $usuario          = new Usuario($id, $nome, $email);
+            $usuario          = new Usuario($linha[0], $nome, $email);
             self::$usuarios[] = $usuario;
         }
     }

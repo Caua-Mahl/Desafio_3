@@ -9,7 +9,7 @@ class Projeto extends Conn
     private string $descricao;
     private string $data_inicio;
     private string $data_fim;
-    private static array $array_projetos = [];
+    private static array $projetos;
 
     public function __construct(int $id, string $nome, string $descricao, string $data_inicio, string $data_fim)
     {
@@ -39,6 +39,10 @@ class Projeto extends Conn
     public function getDataFim(): string
     {
         return $this->data_fim;
+    }
+    public static function getProjetos(): array
+    {
+        return self::$projetos;
     }
     public function setNome(string $nome): void
     {
@@ -72,13 +76,19 @@ class Projeto extends Conn
 
     //cadastra um projeto no banco de dados
     //chama a função converte_para_array para conseguir enviar para o banco os dados
-    public static function cadastrar_projeto(Projeto $projeto)
+    public static function cadastrar_projeto(string $nome, string $descricao, string $data_inicio, string $data_fim)
     {
-        self::$array_projetos[] = $projeto;
-        pg_insert(self::$conn, 'projetos', Projeto::projeto_para_array($projeto));
+        $query = "INSERT INTO projetos (\"nome\",\"descricao\",\"data_inicio\",\"data_fim\") 
+                  VALUES ($1, $2, $3, $4) RETURNING id";
+        $resultado = pg_query_params(self::$conn, $query, array($nome, $descricao, $data_inicio, $data_fim));
 
-        //ver se tem como retornar o id que o banco gerar para salvar no array
+        if ($resultado) {
+            $linha = pg_fetch_row($resultado);
+            $projeto = new Projeto($linha[0], $nome, $descricao, $data_inicio, $data_fim);
+            self::$projetos[] = $projeto;
+        }
     }
+
     //recebe um objeto projeto e faz o get do ID para verificar se existe no banco, caso sim exclui do banco e do array de usuarios
     public static function remover_projeto(Projeto $projeto)
     {
@@ -87,9 +97,9 @@ class Projeto extends Conn
         pg_query_params(self::$conn, $comando_sql, (array) $id_projeto);
 
         // faz um loop para remover o usuario do array de usuarios
-        foreach (self::$array_projetos as $indice => $projeto) {
+        foreach (self::$projetos as $indice => $projeto) {
             if ($projeto->getId() == $id_projeto) {
-                unset(self::$array_projetos[$indice]);
+                unset(self::$projetos[$indice]);
                 break;
             }
         }
@@ -109,9 +119,9 @@ class Projeto extends Conn
         $comando_sql = "UPDATE projetos SET nome = \$2, descricao = \$3, data_inicio = \$4, data_fim = \$5 WHERE id = \$1";
         pg_query_params(self::$conn, $comando_sql, $projeto_convertido);
 
-        foreach (self::$array_projetos as $indice => $projeto) {
+        foreach (self::$projetos as $indice => $projeto) {
             if ($projeto->getId() == $projeto_convertido['id']) {
-                self::$array_projetos[$indice] = $projeto;
+                self::$projetos[$indice] = $projeto;
                 break;
             }
         }
