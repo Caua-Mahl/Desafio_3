@@ -1,7 +1,7 @@
 <?php
-require "interfaces/iConexao.php";
+require_once "interfaces/iConexao.php";
 
-class Tarefa implements IConexao
+class Tarefa implements iConexao
 {
     private int $id;
     private string $descricao;
@@ -114,20 +114,15 @@ class Tarefa implements IConexao
             }
         }
     }
-    // public function listar_por_id($conexao, int $id)
-    // {
-    //     $query = "SELECT * FROM funcionarios WHERE id = $id";
-    //     $retorno = pg_query($conexao, $query);
-    //     $linhas = pg_fetch_assoc($retorno);
+    public static function retorna_tarefa_por_id(int $id_tarefa)
+    {
 
-    //     $funcionario = new Funcionario(0, '', '', 0, 0);
-    //     $funcionario->id = $linhas["id"];
-    //     $funcionario->nome = $linhas["nome"];
-    //     $funcionario->genero = $linhas["genero"];
-    //     $funcionario->idade = $linhas["idade"];
-    //     $funcionario->salario = $linhas["salario"];
+        $comando_sql = "SELECT * FROM tarefas WHERE id = $1";
+        $resultado = pg_query_params(self::$conn, $comando_sql, (array) $id_tarefa);
+        $linhas = pg_fetch_assoc($resultado);
 
-    //     return $funcionario;
+        $tarefa = new Tarefa($linhas['id'], $linhas['descricao'], $linhas['projeto_id'], $linhas['data_inicio'], $linhas['data_fim']);
+        return $tarefa;
 
-    // }
+    }
 }

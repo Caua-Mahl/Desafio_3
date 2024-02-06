@@ -1,6 +1,6 @@
 <?php
 
-interface IConexao
+interface iConexao
 {
     public static function set_conn($conn);
 }

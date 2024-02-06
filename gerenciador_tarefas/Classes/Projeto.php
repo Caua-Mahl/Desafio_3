@@ -1,7 +1,7 @@
 <?php
-require "interfaces/iConexao.php";
+require_once "interfaces/iConexao.php";
 
-class Projeto implements IConexao
+class Projeto implements iConexao
 {
     private int $id;
     private string $nome;
@@ -122,22 +122,13 @@ class Projeto implements IConexao
             }
         }
     }
-    // public function listar_por_id($conexao, int $id)
-    // {
-    //     $query = "SELECT * FROM funcionarios WHERE id = $id";
-    //     $retorno = pg_query($conexao, $query);
-    //     $linhas = pg_fetch_assoc($retorno);
+    public static function retorna_projeto_por_id(int $id_projeto)
+    {
+        $comando_sql = "SELECT * FROM projetos WHERE id = $1";
+        $resultado = pg_query_params(self::$conn, $comando_sql, (array) $id_projeto);
+        $linhas = pg_fetch_assoc($resultado);
 
-    //     $funcionario = new Funcionario(0, '', '', 0, 0);
-    //     $funcionario->id = $linhas["id"];
-    //     $funcionario->nome = $linhas["nome"];
-    //     $funcionario->genero = $linhas["genero"];
-    //     $funcionario->idade = $linhas["idade"];
-    //     $funcionario->salario = $linhas["salario"];
-
-    //     return $funcionario;
-
-    // }
-
-
+        $projeto = new Projeto($linhas['id'], $linhas['nome'], $linhas['descricao'], $linhas['data_inicio'], $linhas['data_fim']);
+        return $projeto;
+    }
 }

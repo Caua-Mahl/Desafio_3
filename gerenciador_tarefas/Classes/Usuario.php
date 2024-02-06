@@ -1,6 +1,6 @@
 <?php
-require "interfaces/iConexao.php";
-class Usuario implements IConexao
+require_once "interfaces/iConexao.php";
+class Usuario implements iConexao
 {
     private int $id;
     private string $nome;
@@ -113,20 +113,16 @@ class Usuario implements IConexao
             }
         }
     }
-    // public function listar_por_id($conexao, int $id)
-    // {
-    //     $query = "SELECT * FROM funcionarios WHERE id = $id";
-    //     $retorno = pg_query($conexao, $query);
-    //     $linhas = pg_fetch_assoc($retorno);
+    public static function retorna_usuario_por_id(int $id_usuario)
+    {
 
-    //     $funcionario = new Funcionario(0, '', '', 0, 0);
-    //     $funcionario->id = $linhas["id"];
-    //     $funcionario->nome = $linhas["nome"];
-    //     $funcionario->genero = $linhas["genero"];
-    //     $funcionario->idade = $linhas["idade"];
-    //     $funcionario->salario = $linhas["salario"];
+        $comando_sql = "SELECT * FROM usuarios WHERE id = $1";
 
-    //     return $funcionario;
+        $resultado = pg_query_params(self::$conn, $comando_sql, (array) $id_usuario);
+        $linhas = pg_fetch_assoc($resultado);
 
-    // }
+        $usuario = new Usuario($linhas['id'], $linhas['nome'], $linhas['email']);
+        return $usuario;
+
+    }
 }

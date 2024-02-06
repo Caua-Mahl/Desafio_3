@@ -15,51 +15,45 @@ Projeto::set_conn($conn);
 Tarefa::set_conn($conn);
 Usuario::set_conn($conn);
 
+//testes usuarios
 $usuario1 = new Usuario("1", "caua", 'cauzin@gmail.com');
 $usuario2 = new Usuario("2", "gustavo", 'mottinha@gmail.com');
-
-//testes usuarios
-Usuario::cadastrar_usuario($usuario1);
-Usuario::cadastrar_usuario($usuario2);
+// Usuario::cadastrar_usuario($usuario1);
+// Usuario::cadastrar_usuario($usuario2);
 //Usuario::remover_usuario($usuario2);
-
+$usuario = Usuario::retorna_usuario_por_id(2);
 $usuario1->setNome('asdfasdfsdfads');
 Usuario::atualizar_usuario_no_banco($usuario1);
 
+//teste projetos
 $projeto1 = new Projeto(1, "teste", "testando projeto", "2023-02-10", "2024-03-11");
 $projeto2 = new Projeto(2, "teste 2 2 2 2", "testando projeto2 2 2 2", "2024-11-10", "2024-12-25");
-
-//testes projetos
-Projeto::cadastrar_projeto($projeto1);
-Projeto::cadastrar_projeto($projeto2);
+// Projeto::cadastrar_projeto($projeto1);
+// Projeto::cadastrar_projeto($projeto2);
 //Projeto::remover_projeto($projeto1);
-
 $projeto2->setNome("sdafsad");
 Projeto::atualizar_projeto_no_banco($projeto2);
+$projeto = Projeto::retorna_projeto_por_id(2);
 
 //testes tarefas
 $tarefa1 = new Tarefa(1, 'tarefa teste', 1, "2023-02-10", "2024-03-11");
 $tarefa2 = new Tarefa(2, 'testnado tarefas', 2, "2023-08-11", "2024-12-19");
-
-Tarefa::cadastrar_tarefa($tarefa1);
-Tarefa::cadastrar_tarefa($tarefa2);
+// Tarefa::cadastrar_tarefa($tarefa1);
+// Tarefa::cadastrar_tarefa($tarefa2);
 //Tarefa::remover_tarefa($tarefa2);
-
 $tarefa2->setDescricao("HAHAHAHAH");
 Tarefa::atualizar_tarefa_no_banco($tarefa2);
+$tarefa = Tarefa::retorna_tarefa_por_id(2);
 
 //testes atribuições
 $atribuicao1 = new Atribuicao(1, 1, 1, "2023-02-10");
 $atribuicao2 = new Atribuicao(2, 2, 2, "2023-08-11");
-
-Atribuicao::cadastrar_atribuicao($atribuicao1);
-Atribuicao::cadastrar_atribuicao($atribuicao2);
-
+// Atribuicao::cadastrar_atribuicao($atribuicao1);
+// Atribuicao::cadastrar_atribuicao($atribuicao2);
 //Atribuicao::remover_atribuicao($atribuicao1);
 $atribuicao1->setDataAtribuicao("2024-09-09");
 Atribuicao::atualizar_atribuicao_no_banco($atribuicao1);
-
-
+$atribuicao = Atribuicao::retorna_atribuicao_por_id(1);
 
 
 $conexao->desconectar();
