@@ -61,7 +61,7 @@ class Atribuicao extends Conn
 
         return $atribuicao_array;
     }
-    public static function cadastrar_atribuicao(int $tarefa_id, int $usuario_id, string $data_atribuicao)
+    public static function cadastrar_atribuicao(int $usuario_id, int $tarefa_id, string $data_atribuicao)
     {
         $query = "INSERT INTO atribuicoes (\"usuario_id\",\"tarefa_id\",\"data_atribuicao\") 
                       VALUES ($1, $2, $3) RETURNING id";
