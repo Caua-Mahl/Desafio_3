@@ -3,8 +3,7 @@
 require_once "Conexao/Conn.php";
 class Tentativa extends Conn
 {
-    private int $id;
-    private int $token_usuario;
+    private string $token_usuario;
     private int $jogo_id;
     private string $resposta_1;
     private string $resposta_2;
@@ -13,7 +12,7 @@ class Tentativa extends Conn
     private string $resposta_5;
     private int $acertos;
 
-    public function __construct(int $token_usuario, int $jogo_id, string $resposta_1, string $resposta_2, string $resposta_3, string $resposta_4, string $resposta_5, int $acertos)
+    public function __construct(string $token_usuario, int $jogo_id, string $resposta_1, string $resposta_2, string $resposta_3, string $resposta_4, string $resposta_5, int $acertos)
     {
 
         $this->token_usuario = $token_usuario;
@@ -58,7 +57,7 @@ class Tentativa extends Conn
     {
         return $this->acertos;
     }
-    public function settoken_usuario(int $token_usuario)
+    public function settoken_usuario(string $token_usuario)
     {
         $this->token_usuario = $token_usuario;
     }
@@ -90,7 +89,7 @@ class Tentativa extends Conn
     {
         $this->acertos = $acertos;
     }
-    public static function cadastrar_tenativa(int $token_usuario, int $jogo_id, string $resposta_1, string $resposta_2, string $resposta_3, string $resposta_4, string $resposta_5, int $acertos)
+    public static function cadastrar_tenativa(string $token_usuario, int $jogo_id, string $resposta_1, string $resposta_2, string $resposta_3, string $resposta_4, string $resposta_5, int $acertos)
     {
         $query = "INSERT INTO tentativa (\"token_usuario\",\"id_jogo\",\"resposta_1\",\"resposta_2\",\"resposta_3\",\"resposta_4\",\"resposta_5\",\"acertos\") 
                       VALUES ($1, $2, $3, $4, $5, $6,$7,$8)";
