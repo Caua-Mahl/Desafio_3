@@ -69,49 +69,68 @@ class Tarefa extends Conn
     }
     public static function cadastrar_tarefa(string $descricao, int $projeto_id, string $data_inicio, string $data_fim)
     {
-        $query = "INSERT INTO tarefas (\"descricao\",\"projeto_id\",\"data_inicio\",\"data_fim\") 
+        try {
+            $query = "INSERT INTO tarefas (\"descricao\",\"projeto_id\",\"data_inicio\",\"data_fim\") 
                       VALUES ($1, $2, $3, $4) RETURNING id";
-        $resultado = pg_query_params(self::$conn, $query, array($descricao, $projeto_id, $data_inicio, $data_fim));
+            $resultado = pg_query_params(self::$conn, $query, array($descricao, $projeto_id, $data_inicio, $data_fim));
 
-        if ($resultado) {
-            $linha = pg_fetch_row($resultado);
-            $tarefa = new Tarefa($linha[0], $descricao, $projeto_id, $data_inicio, $data_fim);
+            if ($resultado) {
+                $linha = pg_fetch_row($resultado);
+                $tarefa = new Tarefa($linha[0], $descricao, $projeto_id, $data_inicio, $data_fim);
+            }
+            return $tarefa;
+
+        } catch (Exception $e) {
+            echo "Não foi possível cadastrar a tarefa: " . $e->getMessage();
         }
-        return $tarefa;
     }
 
     public static function remover_tarefa(Tarefa $tarefa)
     {
+        try {
 
-        $id_tarefa = $tarefa->get_id();
-        $comando_sql = 'DELETE FROM tarefas WHERE id = $1';
-        pg_query_params(self::$conn, $comando_sql, (array) $id_tarefa);
+            $id_tarefa = $tarefa->get_id();
+            $comando_sql = 'DELETE FROM tarefas WHERE id = $1';
+            pg_query_params(self::$conn, $comando_sql, (array) $id_tarefa);
 
+        } catch (Exception $e) {
+            echo "Não foi possível remover a tarefa: " . $e->getMessage();
+        }
     }
     public static function listar_tarefas_do_banco()
     {
-        $comando_sql = "SELECT * FROM tarefas";
-        $resultados = pg_query(self::$conn, $comando_sql);
-        return $resultados;
+        try {
+            $comando_sql = "SELECT * FROM tarefas";
+            $resultados = pg_query(self::$conn, $comando_sql);
+            return $resultados;
 
+        } catch (Exception $e) {
+            echo "Não foi possível listar todas as tarefas do banco: " . $e->getMessage();
+        }
     }
     public static function atualizar_tarefa_no_banco(Tarefa $tarefa)
     {
-        $tarefa_convertida = self::tarefa_para_array($tarefa);
-        $comando_sql = "UPDATE tarefas SET descricao = \$2, projeto_id = \$3, data_inicio = \$4, data_fim = \$5 WHERE id = \$1";
-        pg_query_params(self::$conn, $comando_sql, $tarefa_convertida);
+        try {
+            $tarefa_convertida = self::tarefa_para_array($tarefa);
+            $comando_sql = "UPDATE tarefas SET descricao = \$2, projeto_id = \$3, data_inicio = \$4, data_fim = \$5 WHERE id = \$1";
+            pg_query_params(self::$conn, $comando_sql, $tarefa_convertida);
 
+        } catch (Exception $e) {
+            echo "Não foi possível atualizar a tarefa no banco: " . $e->getMessage();
+        }
     }
     public static function retorna_tarefa_por_id(int $id_tarefa)
     {
+        try {
+            $comando_sql = "SELECT * FROM tarefas WHERE id = $1";
+            $resultado = pg_query_params(self::$conn, $comando_sql, (array) $id_tarefa);
+            $linhas = pg_fetch_assoc($resultado);
 
-        $comando_sql = "SELECT * FROM tarefas WHERE id = $1";
-        $resultado = pg_query_params(self::$conn, $comando_sql, (array) $id_tarefa);
-        $linhas = pg_fetch_assoc($resultado);
+            $tarefa = new Tarefa($linhas['id'], $linhas['descricao'], $linhas['projeto_id'], $linhas['data_inicio'], $linhas['data_fim']);
+            return $tarefa;
 
-        $tarefa = new Tarefa($linhas['id'], $linhas['descricao'], $linhas['projeto_id'], $linhas['data_inicio'], $linhas['data_fim']);
-        return $tarefa;
-
+        } catch (Exception $e) {
+            echo "Não foi possível retornar os dados da tarefa: " . $e->getMessage();
+        }
     }
-
 }

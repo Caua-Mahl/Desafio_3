@@ -79,28 +79,26 @@ class Conexao
 
     public function deletar_tabelas(): void
     {
-        $resultado = pg_query($this->conn, "SELECT tablename FROM pg_tables WHERE schemaname = 'public'");
-        if (!$resultado) {
-            echo "An error occurred.\n";
-            exit;
+        try {
+            $resultado = pg_query($this->conn, "SELECT tablename FROM pg_tables WHERE schemaname = 'public'");
+            while ($linha = pg_fetch_row($resultado)) {
+                $table = $linha[0];
+                pg_query($this->conn, "TRUNCATE TABLE $table CASCADE");
+            }
+            $comando_zerar_ids_usuarios = "SELECT setval('usuarios_id_seq', coalesce(max(id), 1), false) FROM usuarios";
+            $comando_zerar_ids_tarefas = "SELECT setval('tarefas_id_seq', coalesce(max(id), 1), false) FROM tarefas";
+            $comando_zerar_ids_atribuicoes = "SELECT setval('atribuicoes_id_seq', coalesce(max(id), 1), false) FROM atribuicoes";
+            $comando_zerar_ids_projetos = "SELECT setval('projetos_id_seq', coalesce(max(id), 1), false) FROM projetos";
+
+            pg_query($this->conn, $comando_zerar_ids_atribuicoes);
+            pg_query($this->conn, $comando_zerar_ids_usuarios);
+            pg_query($this->conn, $comando_zerar_ids_tarefas);
+            pg_query($this->conn, $comando_zerar_ids_projetos);
+
+        } catch (Exception $e) {
+            echo "Não foi possível deletar e setar os IDs como 0 nas tabelas: " . $e->getMessage();
         }
-        while ($linha = pg_fetch_row($resultado)) {
-            $table = $linha[0];
-            pg_query($this->conn, "TRUNCATE TABLE $table CASCADE");
-        }
-
-        $comando_zerar_ids_usuarios = "SELECT setval('usuarios_id_seq', coalesce(max(id), 1), false) FROM usuarios";
-        $comando_zerar_ids_tarefas = "SELECT setval('tarefas_id_seq', coalesce(max(id), 1), false) FROM tarefas";
-        $comando_zerar_ids_atribuicoes = "SELECT setval('atribuicoes_id_seq', coalesce(max(id), 1), false) FROM atribuicoes";
-        $comando_zerar_ids_projetos = "SELECT setval('projetos_id_seq', coalesce(max(id), 1), false) FROM projetos";
-
-        pg_query($this->conn, $comando_zerar_ids_atribuicoes);
-        pg_query($this->conn, $comando_zerar_ids_usuarios);
-        pg_query($this->conn, $comando_zerar_ids_tarefas);
-        pg_query($this->conn, $comando_zerar_ids_projetos);
-
     }
-
     public function desconectar(): void
     {
         pg_close($this->conn) or die("Nao foi possivel desconectar ao Banco de Dados  <br><br>");
