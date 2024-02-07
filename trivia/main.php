@@ -38,8 +38,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['voltar']) && $_SESSION['indice_pergunta'] > 0) {
         $_SESSION['indice_pergunta']--;
     }
-
-    var_dump($_SESSION['indice_pergunta']);
     
 
     $pergunta = $perguntas[$_SESSION['indice_pergunta']]; // pega a pergunta de acordo com o indice, o $perguntas é uma array de objetos Pergunta
