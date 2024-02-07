@@ -7,11 +7,14 @@ require_once "Classes/RequisitorCurl.php";
 require_once "Classes/Tentativa.php";
 require_once "Classes/Usuario.php";
 require_once "Controlador/Controlador.php";
-require_once 
+require_once "Conexao/Conexao.php";
+
 session_start(); //pra gente armazenar em que questao estamos
 
 $conexao = new Conexao("postgres", "5432", "trivia", "postgres", "exemplo");
 $conexao->conectar();
+// $conexao->deletar_dados_tabelas();
+// $conexao->desconectar();
 Conn::set_conn($conexao->getConn());
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!isset($_SESSION['usuario'])) {
@@ -19,10 +22,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['usuario'] = $usuario;
         var_dump($usuario);
     } else {
-        session_unset();
-        session_destroy();
-        $usuario = Usuario::cadastrar_usuario($_POST["nome"]);
-        $_SESSION['usuario'] = $usuario;
+        
+        $usuario = $_SESSION['usuario'];
         var_dump($usuario);
     }
     if (!isset($_SESSION['jogo'])) {
@@ -80,6 +81,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     echo "</form>";
 }
-unset($_SESSION['indice_pergunta']);
+//unset($_SESSION['indice_pergunta']);
 //$conexao->deletar_dados_tabelas();
 $conexao->desconectar();
