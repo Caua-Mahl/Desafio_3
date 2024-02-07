@@ -14,7 +14,7 @@
 
 <body>
     <h2>Qual seu nome?</h2>
-    <form action="main .php" method="post">
+    <form action="main.php" method="post">
         <input type="text" name="nome" value="">
         <input type="submit" value="Jogar">
     </form>

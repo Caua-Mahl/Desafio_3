@@ -1,18 +1,21 @@
 <?php
-class RequisitorCurl {
+class RequisitorCurl
+{
     public static string $token = "https://opentdb.com/api_token.php?command=request";
     public static string $base = "https://opentdb.com/api.php?amount=5&token=";
 
-    public static function internet(): bool {
-        $conectado = @fsockopen(self::$base, 8102); 
-        if ($conectado){
+    public static function internet(): bool
+    {
+        $conectado = @fsockopen(self::$base, 8102);
+        if ($conectado) {
             fclose($conectado);
-            return true; 
+            return true;
         }
         return false;
     }
 
-    public static function get_api(): array {
+    public static function get_api(): array
+    {
         $ch = curl_init(self::$base);
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -59,5 +62,5 @@ class RequisitorCurl {
         return $decoded;
     }
 
-    
+
 }
