@@ -32,6 +32,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['voltar']) && $_SESSION['indice_pergunta'] > 0) {
         $_SESSION['indice_pergunta']--;
     }
+
+    if (isset($_POST['resposta'])) {
+        $_SESSION['respostas'][$_SESSION['indice_pergunta']] = $_POST['resposta']; // vai guardar a resposta na variavel
+        echo "<br>";
+        echo "<pre>";
+        var_dump($_SESSION['respostas'][$_SESSION['indice_pergunta']]);
+        echo "<br>";
+        echo "<br>";
+        echo "<pre>";
+        var_dump($_SESSION['respostas']);
+        echo "<br>";
+    } 
     if (isset($_POST['enviar']) && $_SESSION['indice_pergunta'] == 4) {
         header("Location: resultados.php");
         exit();
