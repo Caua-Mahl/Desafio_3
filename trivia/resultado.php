@@ -1,5 +1,4 @@
-<?php 
-  if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    echo "dados";
-  }
-?>
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  echo "dados";
+}

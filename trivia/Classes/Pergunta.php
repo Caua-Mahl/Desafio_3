@@ -86,7 +86,9 @@ class Pergunta extends Conn
         if ($resultado) {
             $linha = pg_fetch_row($resultado);
             $pergunta = new Pergunta($linha[0], $tipo, $dificuldade, $categoria, $questao, $correta, $errada);
+            return $pergunta;
         }
-        return $pergunta;
+        throw new Exception("Falha ao cadastrar pergunta");
+
     }
 }
