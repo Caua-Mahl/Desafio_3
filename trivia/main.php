@@ -20,10 +20,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!isset($_SESSION['usuario'])) {
         $usuario = Usuario::cadastrar_usuario($_POST["nome"]);
         $_SESSION['usuario'] = $usuario;
+        echo "Usuario cadastrado";
         var_dump($usuario);
     } else {
-        
         $usuario = $_SESSION['usuario'];
+        echo "Usuario já cadastrado";
         var_dump($usuario);
     }
     if (!isset($_SESSION['jogo'])) {
