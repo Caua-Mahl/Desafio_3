@@ -81,11 +81,14 @@ class Pergunta extends Conn
     {
         $query = "INSERT INTO perguntas (\"tipo\",\"dificuldade\",\"categoria\",\"questao\",\"correta\",\"erradas\") 
                       VALUES ($1, $2, $3, $4, $5, $6) RETURNING id";
+
+
         $resultado = pg_query_params(self::$conn, $query, array($tipo, $dificuldade, $categoria, $questao, $correta, $errada));
 
         if ($resultado) {
             $linha = pg_fetch_row($resultado);
             $pergunta = new Pergunta($linha[0], $tipo, $dificuldade, $categoria, $questao, $correta, $errada);
+
             return $pergunta;
         }
         throw new Exception("Falha ao cadastrar pergunta");

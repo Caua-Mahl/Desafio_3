@@ -21,6 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $jogo = Controlador::jogar();
         $_SESSION['jogo'] = $jogo;
         $_SESSION['indice_pergunta'] = 0; // Adicionado para garantir que o índice comece em 0
+
     } else {
         $jogo = $_SESSION['jogo'];
     }
@@ -65,5 +66,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         throw new Exception("Problema na lógica das perguntas.");
     }
 }
-//$conexao->deletar_dados_tabelas();
+
+// $conexao->deletar_dados_tabelas();
 $conexao->desconectar();
