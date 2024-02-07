@@ -9,7 +9,7 @@ require_once "Classes/Usuario.php";
 require_once "Controlador/Controlador.php";
 require_once "Conexao/Conexao.php";
 
-session_start(); //pra gente armazenar em que questao estamos
+session_start();
 
 $conexao = new Conexao("postgres", "5432", "trivia", "postgres", "exemplo");
 $conexao->conectar();
@@ -25,10 +25,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!isset($_SESSION['jogo'])) {
         $jogo = Controlador::jogar($usuario->getToken());
         $_SESSION['jogo'] = $jogo;
-        var_dump($jogo);
     } else {
         $jogo = $_SESSION['jogo'];
-        var_dump($jogo);
     }
     //$tentativa = Tentativa::cadastrar_tentativa($usuario->getToken(),$jogo->getId(), '12', 'safsad', 'safsad', 'safsad', 'safsad', 1);
     $perguntas = $jogo->perguntas_do_jogo();
@@ -36,10 +34,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (!isset($_SESSION['indice_pergunta'])) {
         $_SESSION['indice_pergunta'] = 0;
-    } // pra começar da pergunta 1 se não tiver nada definido
+    }
 
-
-    // Verificam  se o botão "Avançar" ou "Voltar" foi pressionado
     if (isset($_POST['avançar']) && $_SESSION['indice_pergunta'] < 4) {
         $_SESSION['indice_pergunta']++;
     }
@@ -48,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
 
-    $pergunta = $perguntas[$_SESSION['indice_pergunta']]; // pega a pergunta de acordo com o indice, o $perguntas é uma array de objetos Pergunta
+    $pergunta = $perguntas[$_SESSION['indice_pergunta']];
 
     echo "<h2>" . $pergunta->getQuestao() . "</h2>";
     echo "<form action=\"\" method=\"post\">";
@@ -62,12 +58,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "<input type=\"radio\" name=\"resposta\" value=\"" . $pergunta->getErradas() . "\">" . $pergunta->getErradas() . "<br>";
     }
 
-
-
-    if ($_SESSION['indice_pergunta'] > 0) { // se nao tiver na primeira pergunta aparece o botão de voltar
+    if ($_SESSION['indice_pergunta'] > 0) {
         echo "<input type=\"submit\" name=\"voltar\" value=\"Voltar\">";
     }
-    if ($_SESSION['indice_pergunta'] == 4) { // se nao tiver na ultima pergunta aparece o botão de avançar se tiver aparece o botão de enviar
+    if ($_SESSION['indice_pergunta'] == 4) {
+        echo "</form>";
+        echo "<form action=\"resultado.php\" method=\"post\">";
         echo "<input type=\"submit\" name=\"enviar\" value=\"Enviar\">";
     } else {
         echo "<input type=\"submit\" name=\"avançar\" value=\"Avançar\">";
