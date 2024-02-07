@@ -87,7 +87,6 @@ class Usuario extends Conn
     //recebe como parametro um objeto do tipo usuario e escreve novamente seus atributos no banco
     public static function atualizar_usuario_no_banco(Usuario $usuario)
     {
-
         $usuario_convertido = self::usuario_para_array($usuario);
         $comando_sql = "UPDATE usuarios SET nome = \$2, email = \$3 WHERE id = \$1";
         pg_query_params(self::$conn, $comando_sql, $usuario_convertido);

@@ -18,7 +18,6 @@ class Conexao
         $this->password = $password;
         $this->infos_string = "host=$host port=$port dbname=$dbname user=$user password=$password";
     }
-
     public function get_conn()
     {
         return $this->conn;
@@ -71,8 +70,6 @@ class Conexao
     {
         $this->infos_string = $infos_string;
     }
-
-
     public function conectar()
     {
         $this->conn = pg_connect($this->infos_string) or die("Nao foi possivel conectar ao Banco de Dados  <br><br>");
@@ -91,19 +88,12 @@ class Conexao
             $table = $linha[0];
             pg_query($this->conn, "TRUNCATE TABLE $table CASCADE");
         }
-        $comando = "SELECT setval('atribuicoes_id_seq', coalesce(max(id), 1), false) FROM usuarios
-        UNION ALL
-        SELECT setval('atribuicoes_id_seq', coalesce(max(id), 1), false) FROM tarefas
-        UNION ALL
-        SELECT setval('atribuicoes_id_seq', coalesce(max(id), 1), false) FROM atribuicoes
-        UNION ALL
-        SELECT setval('atribuicoes_id_seq', coalesce(max(id), 1), false) FROM projetos;
-        ";
 
         $comando_zerar_ids_usuarios = "SELECT setval('usuarios_id_seq', coalesce(max(id), 1), false) FROM usuarios";
         $comando_zerar_ids_tarefas = "SELECT setval('tarefas_id_seq', coalesce(max(id), 1), false) FROM tarefas";
         $comando_zerar_ids_atribuicoes = "SELECT setval('atribuicoes_id_seq', coalesce(max(id), 1), false) FROM atribuicoes";
         $comando_zerar_ids_projetos = "SELECT setval('projetos_id_seq', coalesce(max(id), 1), false) FROM projetos";
+
         pg_query($this->conn, $comando_zerar_ids_atribuicoes);
         pg_query($this->conn, $comando_zerar_ids_usuarios);
         pg_query($this->conn, $comando_zerar_ids_tarefas);

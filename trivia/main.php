@@ -1,5 +1,4 @@
 <?php
-
 require_once "Conexao/Conn.php";
 require_once "Classes/Jogo.php";
 require_once "Classes/Pergunta.php";
@@ -13,20 +12,15 @@ session_start();
 
 $conexao = new Conexao("postgres", "5432", "trivia", "postgres", "exemplo");
 $conexao->conectar();
-// $conexao->deletar_dados_tabelas();
-// $conexao->desconectar();
 Conn::set_conn($conexao->getConn());
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['nome'])) {
         $usuario = Usuario::cadastrar_usuario($_POST['nome']);
         $_SESSION['usuario'] = $usuario;
-    }
-    var_dump($_SESSION['usuario']);
-
-    if (isset($_POST['nome'])) {
         $jogo = Controlador::jogar();
         $_SESSION['jogo'] = $jogo;
+        $_SESSION['indice_pergunta'] = 0; // Adicionado para garantir que o índice comece em 0
     } else {
         $jogo = $_SESSION['jogo'];
     }
@@ -37,16 +31,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['voltar']) && $_SESSION['indice_pergunta'] > 0) {
         $_SESSION['indice_pergunta']--;
     }
+    if (isset($_POST['enviar']) && $_SESSION['indice_pergunta'] == 4) {
+        header("Location: resultados.php");
+        exit();
+    }
 
     if (isset($jogo->perguntas_do_jogo()[$_SESSION['indice_pergunta']])) {
         $pergunta = $jogo->perguntas_do_jogo()[$_SESSION['indice_pergunta']];
         echo "<h2>" . $pergunta->getQuestao() . "</h2>";
-        echo "<form action=\"\" method=\"post\">";
+        echo "<form action=\"main.php\" method=\"post\">"; // Corrigido para enviar os dados para main.php
         echo "<input type=\"radio\" name=\"resposta\" value=\"" . $pergunta->getCorreta() . "\">" . $pergunta->getCorreta() . "<br>";
         if ($pergunta->getTipo() == "multiple") {
             $erradas = explode(", ", $pergunta->getErradas());
-            for ($j = 0; $j < 3; $j++) {
-                echo "<input type=\"radio\" name=\"resposta\" value=\"" . $erradas[$j] . "\">" . $erradas[$j] . "<br>";
+            foreach ($erradas as $errada) {
+                echo "<input type=\"radio\" name=\"resposta\" value=\"$errada\">$errada<br>"; // Corrigido o loop foreach
             }
         } else {
             echo "<input type=\"radio\" name=\"resposta\" value=\"" . $pergunta->getErradas() . "\">" . $pergunta->getErradas() . "<br>";
@@ -67,5 +65,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         throw new Exception("Problema na lógica das perguntas.");
     }
 }
-// $conexao->deletar_dados_tabelas();
+//$conexao->deletar_dados_tabelas();
 $conexao->desconectar();
