@@ -7,7 +7,7 @@ class Controlador
     public static function jogar()
     {
         $jogo = [];
-        if(RequisitorCurl::internet()){
+        if (RequisitorCurl::internet()) {
             $perguntas = RequisitorCurl::get_api();
             $jogo = [];
             for ($i = 0; $i < 5; $i++) {
@@ -32,18 +32,18 @@ class Controlador
         $conn = Conn::get_conn();
         $sql = 'SELECT id FROM perguntas ORDER BY RANDOM() LIMIT $1';
         $resultado = pg_query_params($conn, $sql, array(5));
-        
+
         if ($resultado === false) {
             throw new Exception("Erro ao buscar perguntas: " . pg_last_error($conn));
         }
-        
+
         $IDs = [];
         while ($linha = pg_fetch_assoc($resultado)) {
             $IDs[] = $linha['id'];
         }
-        
+
         return $jogo = Jogo::cadastrar_jogo($IDs[0], $IDs[1], $IDs[2], $IDs[3], $IDs[4]);
-        
+
     }
     public static function get_token()
     {

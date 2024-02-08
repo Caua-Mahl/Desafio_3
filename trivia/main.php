@@ -29,15 +29,6 @@ function jogar_jogo()
         }
         if (isset($_POST['resposta'])) {
             $_SESSION['respostas'][$_SESSION['indice_pergunta']] = $_POST['resposta'];
-            echo "Resposta para a pergunta " . $_SESSION['indice_pergunta'] . ": " . $_POST['resposta'] . "<br>";
-            echo "<br>";
-            echo "<pre>";
-            var_dump($_SESSION['respostas'][$_SESSION['indice_pergunta']]);
-            echo "<br>";
-            echo "<br>";
-            echo "<pre>";
-            var_dump($_SESSION['respostas']);
-            echo "<br>";
 
         }
         if (isset($_POST['voltar']) && $_SESSION['indice_pergunta'] > 0) {
@@ -58,6 +49,9 @@ function jogar_jogo()
                 $action = 'resultado.php';
             }
             $pergunta = $jogo->perguntas_do_jogo()[$_SESSION['indice_pergunta']];
+            // $array_perguntas = explode(", ", $pergunta->getErradas());
+            // $array_perguntas[] = $pergunta->getCorreta();
+
             echo "<h2>" . $pergunta->getQuestao() . "</h2>";
             echo "<form action=\"$action\" method=\"post\">";
             echo "<input type=\"radio\" name=\"resposta\" value=\"" . $pergunta->getCorreta() . "\">" . $pergunta->getCorreta() . "<br>";
@@ -83,6 +77,30 @@ function jogar_jogo()
         }
     }
 }
-jogar_jogo();
+
 //$conexao->deletar_dados_tabelas();
-$conexao->desconectar();
+//$conexao->desconectar();
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@500&display=swap" rel="stylesheet">
+    <title>Trivia</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="form">
+            <?php jogar_jogo() ?>
+        </div>
+    </div>
+</body>
+
+</html>

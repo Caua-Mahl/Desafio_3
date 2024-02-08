@@ -36,7 +36,7 @@ class Usuario extends Conn
         $query = "INSERT INTO usuario (\"token\",\"nome\") VALUES ($1, $2)";
         $resultado = pg_query_params(self::$conn, $query, array($token, $nome));
         if ($resultado === false) {
-            throw new Exception("Fala ao cadastrar usuário.");
+            throw new Exception("Erro ao cadastrar usuário.");
         }
         $usuario = new Usuario($token, $nome);
         return $usuario;

@@ -6,7 +6,9 @@ if (isset($_SESSION['respostas'])) {
 
     $respostas = $_SESSION['respostas'];
     foreach ($respostas as $indice => $resposta) {
+        $indice++;
         echo "Resposta para a pergunta $indice: $resposta <br>";
+        //$indice--;
     }
 } else {
     echo "Nenhuma resposta foi encontrada.";
