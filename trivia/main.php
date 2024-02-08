@@ -31,11 +31,11 @@ function jogar_jogo($conexao)
         if (isset($_POST['resposta'])) {
             $_SESSION['respostas'][$_SESSION['indice_pergunta']] = $_POST['resposta'];
         }
-        if (isset($_POST['voltar']) && $_SESSION['indice_pergunta'] > 0) {
-            $_SESSION['indice_pergunta']--;
-        }
         if (isset($_POST['avançar']) && $_SESSION['indice_pergunta'] < 4) {
             $_SESSION['indice_pergunta']++;
+        }
+        if (isset($_POST['voltar']) && $_SESSION['indice_pergunta'] > 0) {
+            $_SESSION['indice_pergunta']--;
         }
         if (isset($_POST['enviar']) && $_SESSION['indice_pergunta'] == 4) {
             $conexao->desconectar();
@@ -55,20 +55,20 @@ function jogar_jogo($conexao)
             $array_perguntas[] = $pergunta->getCorreta();
             shuffle($array_perguntas);
 
-            echo "<h2>" . "(" . $pergunta->getDificuldade() . ")" . $pergunta->getQuestao() . "</h2>";
+            echo "<h2>" . "(" . $pergunta->getDificuldade() . ")  " . $pergunta->getQuestao() . "</h2>";
             for ($i = 0; $i < sizeof($array_perguntas); $i++) {
                 echo "<form action=\"$action\" method=\"post\">";
                 echo "<input type=\"radio\" name=\"resposta\" value=\"" . $array_perguntas[$i] . "\">" . $array_perguntas[$i] . "<br>";
 
             }
-            if ($_SESSION['indice_pergunta'] > 0) {
-                echo "<input type=\"submit\" name=\"voltar\" value=\"Voltar\">";
-            }
             if ($_SESSION['indice_pergunta'] < 4) {
-                echo "<input type=\"submit\" name=\"avançar\" value=\"Avançar\">";
+                echo "<input class=\"button\" type=\"submit\" name=\"avançar\" value=\"Avançar\">";
             }
             if ($_SESSION['indice_pergunta'] == 4) {
-                echo "<input type=\"submit\" name=\"enviar\" value=\"Enviar\">";
+                echo "<input class=\"button\" type=\"submit\" name=\"enviar\" value=\"Enviar\">";
+            }
+            if ($_SESSION['indice_pergunta'] > 0) {
+                echo "<input class=\"button\" type=\"submit\" name=\"voltar\" value=\"Voltar\">";
             }
             echo "</form>";
         }
