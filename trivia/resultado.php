@@ -20,7 +20,7 @@ if (isset($_SESSION['respostas'])) {
     $respostas = $_SESSION['respostas'];
     foreach ($respostas as $indice => $resposta) {
         $indice++;
-        echo "Resposta para a pergunta $indice: $resposta <br>";
+        echo "Resposta marcada na pergunta $indice: $resposta <br>";
         echo "Resposta correta = <br><br>";
     }
     $acertos = Tentativa::calcula_acertos($_SESSION['jogo_id'], $_SESSION['respostas']);
