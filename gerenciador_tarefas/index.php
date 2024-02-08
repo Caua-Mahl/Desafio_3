@@ -44,8 +44,8 @@ Atribuicao::atualizar_atribuicao_no_banco($atribuicao1);
 //FIM TESTES
 
 // INTERATIVIDADE - SISTEMA DE GERENCIAMENTO DE TAREFAS
-$sair=true;
-do{
+$sair = true;
+do {
     echo "\n Usuarios: \n ";
     echo "1- criar usuario: \n ";
     echo "2- remover usuario: \n ";
@@ -71,8 +71,8 @@ do{
     echo "16- listar atribuições: \n ";
 
     echo "\n15- sair: \n ";
-    $interatividade= intval(readline("Digite a opção desejada: "));
-    switch($interatividade){
+    $interatividade = intval(readline("Digite a opção desejada: "));
+    switch ($interatividade) {
         case 1:
             $nome = readline("Digite o nome do usuario: ");
             $email = readline("Digite o email do usuario: ");
@@ -90,8 +90,8 @@ do{
             break;
         case 4:
             $usuarios = Usuario::listar_usuarios_do_banco();
-            foreach($usuarios as $usuario){
-                echo "Nome: ".$usuario->get_nome()." Email: ".$usuario->get_email()."\n";
+            foreach ($usuarios as $usuario) {
+                echo "Nome: " . $usuario->get_nome() . " Email: " . $usuario->get_email() . "\n";
             }
             break;
         case 5:
@@ -115,8 +115,8 @@ do{
             break;
         case 8:
             $projetos = Projeto::listar_projetos_do_banco();
-            foreach($projetos as $projeto){
-                echo "Nome: ".$projeto->get_nome()." Descrição: ".$projeto->get_descricao()." Data de inicio: ".$projeto->get_data_inicio()." Data de fim: ".$projeto->get_data_fim()."\n";
+            foreach ($projetos as $projeto) {
+                echo "Nome: " . $projeto->get_nome() . " Descrição: " . $projeto->get_descricao() . " Data de inicio: " . $projeto->get_data_inicio() . " Data de fim: " . $projeto->get_data_fim() . "\n";
             }
             break;
         case 9:
@@ -128,8 +128,8 @@ do{
             break;
         case 10:
             $tarefas = Tarefa::listar_tarefas_do_banco();
-            foreach($tarefas as $tarefa){
-                echo "Descrição: ".$tarefa->get_descricao()." Data de inicio: ".$tarefa->get_data_inicio()." Data de fim: ".$tarefa->get_data_fim()."\n";
+            foreach ($tarefas as $tarefa) {
+                echo "Descrição: " . $tarefa->get_descricao() . " Data de inicio: " . $tarefa->get_data_inicio() . " Data de fim: " . $tarefa->get_data_fim() . "\n";
             }
             break;
         case 11:
@@ -140,7 +140,7 @@ do{
             break;
         case 12:
             $id = readline("Digite o id da atribuição que deseja remover: ");
-           // $atribuicao = Atribuicao::remover_atribuicao($id);
+            // $atribuicao = Atribuicao::remover_atribuicao($id);
             break;
         case 13:
             $id = readline("Digite o id da atribuição que deseja atualizar: ");
@@ -151,15 +151,15 @@ do{
             break;
         case 14:
             $atribuicoes = Atribuicao::listar_atribuicoes_do_banco();
-            foreach($atribuicoes as $atribuicao){
-                echo "Id do usuario: ".$atribuicao->get_id_usuario()." Id da tarefa: ".$atribuicao->get_id_tarefa()." Data de atribuição: ".$atribuicao->get_data_atribuicao()."\n";
+            foreach ($atribuicoes as $atribuicao) {
+                echo "Id do usuario: " . $atribuicao->get_id_usuario() . " Id da tarefa: " . $atribuicao->get_id_tarefa() . " Data de atribuição: " . $atribuicao->get_data_atribuicao() . "\n";
             }
             break;
         case 15:
-            $sair=false;
+            $sair = false;
     }
 
-}while($sair);
+} while ($sair);
 
 $conexao->desconectar();
 //docker exec -it e8e5eb35ca7b /bin/bash
