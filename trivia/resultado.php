@@ -59,14 +59,17 @@ function verificar_respostas()
 </head>
 
 <body>
-    <div class="container">
+    <div class="container-resultado">
         <div class="form">
             <?php verificar_respostas() ?>
 
-            <!-- Adicione o botão "Jogar Novamente" -->
             <form action="index.php" method="get">
                 <input class="button-main" type="submit" value="Jogar Novamente">
             </form>
+            <form action="https://youtu.be/dQw4w9WgXcQ?si=OJyCn7-IFrrXkeEw" method="get">
+                <input class="button-main" type="submit" value="Sair">
+            </form>
+
         </div>
     </div>
 </body>

@@ -53,10 +53,10 @@ function jogar_jogo($conexao)
             $array_perguntas[] = $pergunta->getCorreta();
             shuffle($array_perguntas);
 
-            echo "<h2 style='text-align: center;'>" . "(" . $pergunta->getDificuldade() . ")  " . $pergunta->getQuestao() . "</h2>";
+            echo "<h2 style='text-align: left;'>" . "(" . $pergunta->getDificuldade() . ")  " . $pergunta->getQuestao() . "</h2> <br>";
             for ($i = 0; $i < sizeof($array_perguntas); $i++) {
                 echo "<form class=\"form-main\" action=\"$action\" method=\"post\">";
-                echo "<ul><input type=\"radio\" name=\"resposta\" value=\"" . $array_perguntas[$i] . "\">" . $array_perguntas[$i] . "</ul> <br>";
+                echo "<ul> <input type=\"radio\" name=\"resposta\" value=\" " . $array_perguntas[$i] . " \"> " . $array_perguntas[$i] . " </ul>  <br> ";
 
             }
             if ($_SESSION['indice_pergunta'] < 4) {

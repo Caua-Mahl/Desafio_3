@@ -27,7 +27,7 @@ if (isset($_SESSION['usuario'])) {
         <div class="form-index">
             <h2>Informe seu nome: </h2>
             <form action="main.php" method="post">
-                <input type="text" name="nome" value="">
+                <input class='caixa-nome' type="text" name="nome" value="">
                 <input class="button" type="submit" value="Cadastrar">
             </form>
         </div>
