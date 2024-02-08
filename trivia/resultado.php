@@ -23,7 +23,6 @@ if (isset($_SESSION['respostas'])) {
         echo "Resposta para a pergunta $indice: $resposta <br>";
         //$indice--;
     }
-
     $acertos = Tentativa::calcula_acertos($_SESSION['jogo_id'], $_SESSION['respostas']);
     Tentativa::cadastrar_tentativa(
         $_SESSION['usuario_token'],
