@@ -48,7 +48,6 @@ function jogar_jogo($conexao)
             } else {
                 $action = 'resultado.php';
             }
-
             $pergunta = $jogo->perguntas_do_jogo()[$_SESSION['indice_pergunta']];
             $array_perguntas = explode(", ", $pergunta->getErradas());
             $array_perguntas[] = $pergunta->getCorreta();
@@ -56,18 +55,18 @@ function jogar_jogo($conexao)
 
             echo "<h2 style='text-align: center;'>" . "(" . $pergunta->getDificuldade() . ")  " . $pergunta->getQuestao() . "</h2>";
             for ($i = 0; $i < sizeof($array_perguntas); $i++) {
-                echo "<form action=\"$action\" method=\"post\">";
-                echo "<input type=\"radio\" name=\"resposta\" value=\"" . $array_perguntas[$i] . "\">" . $array_perguntas[$i] . "<br>";
+                echo "<form class=\"form-main\" action=\"$action\" method=\"post\">";
+                echo "<ul><input type=\"radio\" name=\"resposta\" value=\"" . $array_perguntas[$i] . "\">" . $array_perguntas[$i] . "</ul> <br>";
 
             }
             if ($_SESSION['indice_pergunta'] < 4) {
-                echo "<input class=\"button\" type=\"submit\" name=\"avançar\" value=\"Avançar\">";
+                echo "<input class=\"button-main\" type=\"submit\" name=\"avançar\" value=\"Avançar\">";
             }
             if ($_SESSION['indice_pergunta'] == 4) {
-                echo "<input class=\"button\" type=\"submit\" name=\"enviar\" value=\"Enviar\">";
+                echo "<input class=\"button-main\" type=\"submit\" name=\"enviar\" value=\"Enviar\">";
             }
             if ($_SESSION['indice_pergunta'] > 0) {
-                echo "<input class=\"button\" type=\"submit\" name=\"voltar\" value=\"Voltar\">";
+                echo "<input class=\"button-main\" type=\"submit\" name=\"voltar\" value=\"Voltar\">";
             }
             echo "</form>";
         }
@@ -86,12 +85,12 @@ function jogar_jogo($conexao)
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@500&display=swap" rel="stylesheet">
-    <title>Trivia</title>
+    <title>Perguntas Trivia</title>
 </head>
 
 <body>
     <div class="container">
-        <div class="form">
+        <div class="form-main">
             <?php jogar_jogo($conexao) ?>
         </div>
     </div>

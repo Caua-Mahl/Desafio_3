@@ -16,6 +16,7 @@ if (isset($_SESSION['usuario'])) {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@500&display=swap" rel="stylesheet">
     <title>Trivia</title>
+
 </head>
 
 <body>
@@ -23,7 +24,7 @@ if (isset($_SESSION['usuario'])) {
         <div class="header">
             <h1>Bem vindo ao Trivia</h1>
         </div>
-        <div class="form">
+        <div class="form-index">
             <h2>Informe seu nome: </h2>
             <form action="main.php" method="post">
                 <input type="text" name="nome" value="">

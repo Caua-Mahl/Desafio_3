@@ -36,7 +36,7 @@ function verificar_respostas()
         foreach ($respostas as $indice => $resposta) {
             $indice++;
             echo "Resposta marcada na pergunta $indice: $resposta <br>";
-            echo "Resposta correta = <br><br>";
+            // echo "Resposta correta = <br><br>";
         }
     } else {
         echo "Nenhuma resposta foi encontrada.";
@@ -65,7 +65,7 @@ function verificar_respostas()
 
             <!-- Adicione o botão "Jogar Novamente" -->
             <form action="index.php" method="get">
-                <input class="button" type="submit" value="Jogar Novamente">
+                <input class="button-main" type="submit" value="Jogar Novamente">
             </form>
         </div>
     </div>
