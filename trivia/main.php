@@ -14,31 +14,22 @@ $conexao = new Conexao("postgres", "5432", "trivia", "postgres", "exemplo");
 $conexao->conectar();
 Conn::set_conn($conexao->getConn());
 
-function jogar_jogo()
+function jogar_jogo($conexao)
 {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (isset($_POST['nome'])) {
             $usuario = Usuario::cadastrar_usuario($_POST['nome']);
+            $_SESSION['usuario_token'] = $usuario->getToken();
             $_SESSION['usuario'] = $usuario;
             $jogo = Controlador::jogar();
+            $_SESSION['jogo_id'] = $jogo->getId();
             $_SESSION['jogo'] = $jogo;
             $_SESSION['indice_pergunta'] = 0;
-
         } else {
             $jogo = $_SESSION['jogo'];
         }
         if (isset($_POST['resposta'])) {
             $_SESSION['respostas'][$_SESSION['indice_pergunta']] = $_POST['resposta'];
-            echo "Resposta para a pergunta " . $_SESSION['indice_pergunta'] . ": " . $_POST['resposta'] . "<br>";
-            echo "<br>";
-            echo "<pre>";
-            var_dump($_SESSION['respostas'][$_SESSION['indice_pergunta']]);
-            echo "<br>";
-            echo "<br>";
-            echo "<pre>";
-            var_dump($_SESSION['respostas']);
-            echo "<br>";
-
         }
         if (isset($_POST['voltar']) && $_SESSION['indice_pergunta'] > 0) {
             $_SESSION['indice_pergunta']--;
@@ -48,6 +39,7 @@ function jogar_jogo()
         }
         if (isset($_POST['enviar']) && $_SESSION['indice_pergunta'] == 4) {
             $_SESSION['respostas'][$_SESSION['indice_pergunta']] = $_POST['resposta'];
+            $conexao->desconectar();
             header("Location: resultados.php");
             exit();
         }
@@ -57,6 +49,7 @@ function jogar_jogo()
             } else {
                 $action = 'resultado.php';
             }
+
             $pergunta = $jogo->perguntas_do_jogo()[$_SESSION['indice_pergunta']];
             echo "<h2>" . $pergunta->getQuestao() . "</h2>";
             echo "<form action=\"$action\" method=\"post\">";
@@ -83,6 +76,6 @@ function jogar_jogo()
         }
     }
 }
-jogar_jogo();
+jogar_jogo($conexao);
 //$conexao->deletar_dados_tabelas();
 $conexao->desconectar();
