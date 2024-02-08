@@ -38,7 +38,6 @@ function jogar_jogo($conexao)
             $_SESSION['indice_pergunta']++;
         }
         if (isset($_POST['enviar']) && $_SESSION['indice_pergunta'] == 4) {
-            $_SESSION['respostas'][$_SESSION['indice_pergunta']] = $_POST['resposta'];
             $conexao->desconectar();
             header("Location: resultados.php");
             exit();
