@@ -13,11 +13,9 @@ body {
 .container {
     background-color: #999999;
     width: 600px;
-    height: 600px;
     margin-top: 5%;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 20%;
     padding: 12px;
     border: 2px solid #414141;
     border-radius: 10px;
@@ -33,7 +31,6 @@ body {
 
 .form {
     margin-top: 4px;
-    margin-bottom: 4px;
     padding-top: 110px;
 }
 
@@ -47,13 +44,11 @@ body {
 .form label {
     font-weight: bold;
     margin-top: 4px;
-    margin-bottom: 4px;
 }
 
 .form input {
     height: 32px;
     margin-top: 4px;
-    margin-bottom: 1px;
     padding-left: 12px;
     border: 1px solid #999;
     border-radius: 10px;
@@ -65,18 +60,6 @@ body {
     background: #f3f3f5;
 }
 
-.form button {
-    background: #229954;
-    height: 32px;
-    border: none;
-    border-radius: 10px;
-    color: #fff;
-    margin-top: 4px;
-    margin-bottom: 4px;
-    transition: background 0.3s;
-    text-align: center;
-}
-
 .button {
     background: #229954;
     height: 32px;
@@ -84,63 +67,11 @@ body {
     border-radius: 10px;
     color: #fff;
     margin-top: 4px;
-    margin-bottom: 4px;
     transition: background 0.3s;
 }
 
 .form button:hover {
     background: #018d3e;
-}
-
-.separator {
-    background: #bbb;
-    height: 2px;
-    border-radius: 1px;
-}
-
-.list-alternativas {
-    margin-top: 12px;
-    margin-bottom: 12px;
-}
-
-.list-alternativas ul {
-    list-style: none;
-}
-
-.list-alternativas ul li {
-    background: #00c3ff;
-    height: 54px;
-    border-radius: 4px;
-    color: #fff;
-    margin-top: 4px;
-    margin-bottom: 4px;
-    padding: 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: background 0.3s;
-
-    display: flex;
-    justify-content: space-between;
-
-}
-
-.list-alternativas ul li:hover {
-    background: #52b7ff;
-}
-
-.btn-clear {
-    background: #e4e006;
-    height: 32px;
-    border: none;
-    border-radius: 4px;
-    padding: 0 12px;
-    color: #fff;
-    transition: background 0.3s;
-}
-
-.btn-clear:hover {
-    background: #ffa99e;
 }
 
 .footer {
@@ -152,55 +83,4 @@ body {
 .footer p {
     color: #999;
     font-size: 12px;
-}
-
-.details-container {
-    background: #fff;
-    max-width: 700px;
-    margin-top: 5%;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 12px;
-}
-
-.row {
-    display: flex;
-    justify-content: space-between;
-    padding: 12px;
-}
-
-.details {
-    width: 300px;
-    border: 1px solid #f0f0f5;
-    border-radius: 4px;
-    margin-right: 4px;
-    margin-right: 8px;
-    padding: 16px;
-}
-
-.details dt dl {
-    margin-top: 4px;
-    margin-bottom: 4px;
-    font-weight: bold;
-    color: #666;
-}
-
-.details dl dd {
-    margin-top: 4px;
-    margin-bottom: 12px;
-    color: #999;
-}
-
-.image {
-    width: 400px;
-    border: 1px solid #f0f0f5;
-    border-radius: 4px;
-    margin-right: 8px;
-    margin-right: 8px;
-    padding: 16px;
-}
-
-.image img {
-    max-width: 100%;
-    height: auto;
 }

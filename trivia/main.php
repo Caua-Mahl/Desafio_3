@@ -50,12 +50,11 @@ function jogar_jogo($conexao)
             }
 
             $pergunta = $jogo->perguntas_do_jogo()[$_SESSION['indice_pergunta']];
-
             $array_perguntas = explode(", ", $pergunta->getErradas());
             $array_perguntas[] = $pergunta->getCorreta();
             shuffle($array_perguntas);
 
-            echo "<h2>" . "(" . $pergunta->getDificuldade() . ")  " . $pergunta->getQuestao() . "</h2>";
+            echo "<h2 style='text-align: center;'>" . "(" . $pergunta->getDificuldade() . ")  " . $pergunta->getQuestao() . "</h2>";
             for ($i = 0; $i < sizeof($array_perguntas); $i++) {
                 echo "<form action=\"$action\" method=\"post\">";
                 echo "<input type=\"radio\" name=\"resposta\" value=\"" . $array_perguntas[$i] . "\">" . $array_perguntas[$i] . "<br>";
@@ -74,10 +73,8 @@ function jogar_jogo($conexao)
         }
     }
 }
-
 // $conexao->deletar_dados_tabelas();
 // $conexao->desconectar();
-
 ?>
 <!DOCTYPE html>
 <html lang="en">

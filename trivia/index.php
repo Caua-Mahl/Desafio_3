@@ -30,9 +30,6 @@ if (isset($_SESSION['usuario'])) {
                 <input class="button" type="submit" value="Cadastrar">
             </form>
         </div>
-        <div class="footer">
-            <p>Desenvolvido por Cauã e Gustavo </p>
-        </div>
     </div>
 </body>
 
