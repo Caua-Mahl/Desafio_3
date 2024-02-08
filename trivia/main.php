@@ -23,6 +23,8 @@ function jogar_jogo($conexao)
             $_SESSION['usuario'] = $usuario;
             $jogo = Controlador::jogar($_SESSION['usuario_token']);
             $_SESSION['jogo_id'] = $jogo->getId();
+            $_SESSION['corretas']= $jogo->getCorretas();
+            $_SESSION['perguntas'] = $jogo->getPerguntas();
             $_SESSION['jogo'] = $jogo;
             $_SESSION['indice_pergunta'] = 0;
         } else {
@@ -32,28 +34,38 @@ function jogar_jogo($conexao)
             $_SESSION['respostas'][$_SESSION['indice_pergunta']] = $_POST['resposta'];
         }
         if (isset($_POST['avançar']) && $_SESSION['indice_pergunta'] < 4) {
-            $_SESSION['indice_pergunta']++;
-        }
+            if (isset($_POST['resposta'])) {
+                $_SESSION['indice_pergunta']++;
+            } else {
+                echo "<p style='color:red;'>Por favor, selecione uma resposta antes de avançar.</p>";
+            }        }
         if (isset($_POST['voltar']) && $_SESSION['indice_pergunta'] > 0) {
             $_SESSION['indice_pergunta']--;
         }
-        if (isset($_POST['enviar']) && $_SESSION['indice_pergunta'] == 4) {
-            $conexao->desconectar();
-            header("Location: resultados.php");
-            exit();
+        if (isset($_POST['enviar']) && $_SESSION['indice_pergunta'] == 4 && isset($_POST['resposta'])) {
+            if (isset($_POST['resposta'])) {
+                $conexao->desconectar();
+                header("Location: resultados.php");
+                exit();
+            } else {
+                echo "<p style='color:red;'>Por favor, selecione uma resposta antes de avançar.</p>";
+            }
         }
         if (isset($jogo->perguntas_do_jogo()[$_SESSION['indice_pergunta']])) {
             if ($_SESSION['indice_pergunta'] < 4) {
                 $action = 'main.php';
-            } else {
+            } elseif($_SESSION['indice_pergunta'] == 4 && isset($_POST['resposta'])) {
                 $action = 'resultado.php';
+            } else {
+                echo "<p style='color:red;'>Por favor, responda a todas as perguntas antes de prosseguir.</p>";
             }
+        }
             $pergunta = $jogo->perguntas_do_jogo()[$_SESSION['indice_pergunta']];
             $array_perguntas = explode(", ", $pergunta->getErradas());
             $array_perguntas[] = $pergunta->getCorreta();
             shuffle($array_perguntas);
 
-            echo "<h2 style='text-align: left;'>" . "(" . $pergunta->getDificuldade() . ")  " . $pergunta->getQuestao() . "</h2> <br>";
+            echo "<h2 style='text-align: center;'>" .(($_SESSION['indice_pergunta'])+1) ."° Pergunta (" . $pergunta->getDificuldade() . "):   " . $pergunta->getQuestao() . "</h2>";
             for ($i = 0; $i < sizeof($array_perguntas); $i++) {
                 echo "<form class=\"form-main\" action=\"$action\" method=\"post\">";
                 echo "<ul> <input type=\"radio\" name=\"resposta\" value=\" " . $array_perguntas[$i] . " \"> " . $array_perguntas[$i] . " </ul>  <br> ";
@@ -73,7 +85,6 @@ function jogar_jogo($conexao)
 
             }
             echo "</form>";
-        }
     }
 }
 // $conexao->deletar_dados_tabelas();

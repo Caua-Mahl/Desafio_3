@@ -102,17 +102,12 @@ class Tentativa extends Conn
         $tentativa = new Tentativa($token_usuario, $jogo_id, $resposta_1, $resposta_2, $resposta_3, $resposta_4, $resposta_5, $acertos);
         return $tentativa;
     }
-    public static function calcula_acertos(int $jogo_id, array $respostas)
+    public static function calcula_acertos(array $corretas, array $respostas)
     {
-        $jogo = array();
-        $sql = "SELECT correta FROM jogo j INNER JOIN perguntas p  ON j.pergunta1_id = p.id or j.pergunta2_id = p.id or j.pergunta3_id = p.id or j.pergunta4_id = p.id or j.pergunta5_id = p.id   where j.id = $1";
-        $resultado = pg_query_params(self::$conn, $sql, array($jogo_id));
-        for ($i = 0; $i < 5; $i++) {
-            $jogo[$i] = pg_fetch_assoc($resultado);
-        }
-        $acertos = 0;
-        for ($i = 0; $i < 5; $i++) {
-            if ($jogo[$i]['correta'] == $respostas[$i]) {
+        $acertos = 0;   
+        for ($i=0; $i < 5; $i++) { 
+            echo "<br>";
+            if ((substr($respostas[$i], 1, -1)) == $corretas[$i]) {
                 $acertos++;
             }
         }

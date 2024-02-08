@@ -14,12 +14,22 @@ $conexao = new Conexao("postgres", "5432", "trivia", "postgres", "exemplo");
 $conexao->conectar();
 Conn::set_conn($conexao->getConn());
 
+
 function verificar_respostas()
 {
     if (isset($_SESSION['respostas'])) {
         $_SESSION['respostas'][$_SESSION['indice_pergunta']] = $_POST['resposta'];
+        $perguntas = $_SESSION['perguntas'];
+        $corretas  = $_SESSION['corretas'];
+        $respostas = $_SESSION['respostas'];
+        $acertos   = 0;
 
-        $acertos = Tentativa::calcula_acertos($_SESSION['jogo_id'], $_SESSION['respostas']);
+        foreach ($respostas as $indice => $resposta) {
+            if (substr($resposta,1,-1) == $corretas[$indice]) {
+                $acertos++;
+            }
+        }
+
         Tentativa::cadastrar_tentativa(
             $_SESSION['usuario_token'],
             $_SESSION['jogo_id'],
@@ -30,13 +40,13 @@ function verificar_respostas()
             $_SESSION['respostas'][4],
             $acertos
         );
-        echo "<h2> Acertou $acertos de 5 perguntas</h2>";
+        echo "<h2> Acertou $acertos de 5 perguntas</h2> <br>";
 
-        $respostas = $_SESSION['respostas'];
         foreach ($respostas as $indice => $resposta) {
             $indice++;
-            echo "Resposta marcada na pergunta $indice: $resposta <br>";
-            // echo "Resposta correta = <br><br>";
+            echo "Pergunta $indice: " . $perguntas[$indice-1]. "<br>";
+            echo "Resposta marcada: $resposta <br>";
+            echo "Resposta correta: " . $corretas[$indice-1] . "<br><br>";
         }
     } else {
         echo "Nenhuma resposta foi encontrada.";

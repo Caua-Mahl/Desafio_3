@@ -93,5 +93,24 @@ class Jogo extends Conn
         }
         return $perguntas;
     }
-
+    public function getCorretas()
+    {
+        $query = "SELECT correta FROM perguntas WHERE id IN ($1, $2, $3, $4, $5)";
+        $resultado = pg_query_params(self::$conn, $query, array($this->Id_pergunta1, $this->Id_pergunta2, $this->Id_pergunta3, $this->Id_pergunta4, $this->Id_pergunta5));
+        $corretas = array();
+        while ($linha = pg_fetch_assoc($resultado)) {
+            $corretas[] = $linha["correta"];
+        }
+        return $corretas;
+    }
+    public function getPerguntas()
+    {
+        $query = "SELECT questao FROM perguntas WHERE id IN ($1, $2, $3, $4, $5)";
+        $resultado = pg_query_params(self::$conn, $query, array($this->Id_pergunta1, $this->Id_pergunta2, $this->Id_pergunta3, $this->Id_pergunta4, $this->Id_pergunta5));
+        $perguntas = array();
+        while ($linha = pg_fetch_assoc($resultado)) {
+            $perguntas[] = $linha["questao"];
+        }
+        return $perguntas;
+    }
 }
