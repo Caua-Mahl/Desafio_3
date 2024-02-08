@@ -65,8 +65,12 @@ function jogar_jogo($conexao)
             if ($_SESSION['indice_pergunta'] == 4) {
                 echo "<input class=\"button-main\" type=\"submit\" name=\"enviar\" value=\"Enviar\">";
             }
+
+            echo "</form>";
+            echo "<form class=\"form-main\" action=\"main.php\" method=\"post\">";
             if ($_SESSION['indice_pergunta'] > 0) {
                 echo "<input class=\"button-main\" type=\"submit\" name=\"voltar\" value=\"Voltar\">";
+
             }
             echo "</form>";
         }
