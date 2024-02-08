@@ -21,7 +21,7 @@ function jogar_jogo($conexao)
             $usuario = Usuario::cadastrar_usuario($_POST['nome']);
             $_SESSION['usuario_token'] = $usuario->getToken();
             $_SESSION['usuario'] = $usuario;
-            $jogo = Controlador::jogar();
+            $jogo = Controlador::jogar($_SESSION['usuario_token']);
             $_SESSION['jogo_id'] = $jogo->getId();
             $_SESSION['jogo'] = $jogo;
             $_SESSION['indice_pergunta'] = 0;

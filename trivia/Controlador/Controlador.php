@@ -4,11 +4,11 @@ require_once "Classes/RequisitorCurl.php";
 
 class Controlador
 {
-    public static function jogar()
+    public static function jogar(string $token)
     {
         $jogo = [];
         if (RequisitorCurl::internet()) {
-            $perguntas = RequisitorCurl::get_api();
+            $perguntas = RequisitorCurl::get_api($token);
             $jogo = [];
             for ($i = 0; $i < 5; $i++) {
                 $pergunta = $perguntas["results"][$i];
