@@ -55,7 +55,7 @@ function jogar_jogo($conexao)
             $array_perguntas[] = $pergunta->getCorreta();
             shuffle($array_perguntas);
 
-            echo "<h2>" . $pergunta->getQuestao() . "</h2>";
+            echo "<h2>"."(". $pergunta->getDificuldade() .")" . $pergunta->getQuestao() . "</h2>";
             for ($i = 0; $i < sizeof($array_perguntas); $i++) {
                 echo "<form action=\"$action\" method=\"post\">";
                 echo "<input type=\"radio\" name=\"resposta\" value=\"" . $array_perguntas[$i] . "\">" . $array_perguntas[$i] . "<br>";
