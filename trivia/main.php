@@ -53,18 +53,12 @@ function jogar_jogo()
             $array_perguntas = explode(", ", $pergunta->getErradas());
             $array_perguntas[] = $pergunta->getCorreta();
             shuffle($array_perguntas);
-            //PRECISA ARRUMAR A LOGICA PARA PRINTAR O ARRAY
-            echo "<h2>" . $pergunta->getQuestao() . "</h2>";
-            echo "<form action=\"$action\" method=\"post\">";
-            echo "<input type=\"radio\" name=\"resposta\" value=\"" . $pergunta->getCorreta() . "\">" . $pergunta->getCorreta() . "<br>";
 
-            if ($pergunta->getTipo() == "multiple") {
-                $erradas = explode(", ", $pergunta->getErradas());
-                foreach ($erradas as $errada) {
-                    echo "<input type=\"radio\" name=\"resposta\" value=\"$errada\">$errada<br>";
-                }
-            } else {
-                echo "<input type=\"radio\" name=\"resposta\" value=\"" . $pergunta->getErradas() . "\">" . $pergunta->getErradas() . "<br>";
+            echo "<h2>" . $pergunta->getQuestao() . "</h2>";
+            for ($i = 0; $i < sizeof($array_perguntas); $i++) {
+                echo "<form action=\"$action\" method=\"post\">";
+                echo "<input type=\"radio\" name=\"resposta\" value=\"" . $array_perguntas[$i] . "\">" . $array_perguntas[$i] . "<br>";
+
             }
             if ($_SESSION['indice_pergunta'] > 0) {
                 echo "<input type=\"submit\" name=\"voltar\" value=\"Voltar\">";
