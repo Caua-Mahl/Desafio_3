@@ -32,10 +32,13 @@ class Usuario extends Conn
     public static function cadastrar_usuario(string $nome)
     {
         $token = Controlador::get_token();
-        $query = "INSERT INTO usuario (\"token\",\"nome\") VALUES ($1, $2)";
-        pg_query_params(self::$conn, $query, array($token, $nome));
-        $usuario = new Usuario($token, $nome);
 
+        $query = "INSERT INTO usuario (\"token\",\"nome\") VALUES ($1, $2)";
+        $resultado = pg_query_params(self::$conn, $query, array($token, $nome));
+        if ($resultado === false) {
+            throw new Exception("Erro ao cadastrar usuário.");
+        }
+        $usuario = new Usuario($token, $nome);
         return $usuario;
     }
 

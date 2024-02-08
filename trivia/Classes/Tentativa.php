@@ -94,9 +94,13 @@ class Tentativa extends Conn
         $query = "INSERT INTO tentativa (\"token_usuario\",\"id_jogo\",\"resposta_1\",\"resposta_2\",\"resposta_3\",\"resposta_4\",\"resposta_5\",\"acertos\") 
                       VALUES ($1, $2, $3, $4, $5, $6,$7,$8)";
 
-        pg_query_params(self::$conn, $query, array($token_usuario, $jogo_id, $resposta_1, $resposta_2, $resposta_3, $resposta_4, $resposta_5, $acertos));
-        $tentativa = new Tentativa($token_usuario, $jogo_id, $resposta_1, $resposta_2, $resposta_3, $resposta_4, $resposta_5, $acertos);
+        $resultado = pg_query_params(self::$conn, $query, array($token_usuario, $jogo_id, $resposta_1, $resposta_2, $resposta_3, $resposta_4, $resposta_5, $acertos));
 
+        if ($resultado === FALSE) {
+            throw new Exception("Falha ao cadastrar tentativa.");
+        }
+
+        $tentativa = new Tentativa($token_usuario, $jogo_id, $resposta_1, $resposta_2, $resposta_3, $resposta_4, $resposta_5, $acertos);
         return $tentativa;
     }
 }

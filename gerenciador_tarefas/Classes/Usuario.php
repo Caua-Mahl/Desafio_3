@@ -57,52 +57,77 @@ class Usuario extends Conn
 
     public static function cadastrar_usuario(string $nome, string $email)
     {
-        $query = "INSERT INTO usuarios (\"nome\",\"email\") 
-                      VALUES ($1, $2) RETURNING id";
-        $resultado = pg_query_params(self::$conn, $query, array($nome, $email));
+        try {
+            $query = "INSERT INTO usuarios (\"nome\",\"email\") 
+            VALUES ($1, $2) RETURNING id";
+            $resultado = pg_query_params(self::$conn, $query, array($nome, $email));
 
-        if ($resultado) {
-            $linha = pg_fetch_row($resultado);
-            $usuario = new Usuario($linha[0], $nome, $email);
+            if ($resultado) {
+                $linha = pg_fetch_row($resultado);
+                $usuario = new Usuario($linha[0], $nome, $email);
+            }
+            return $usuario;
+
+        } catch (Exception $e) {
+            echo "Não foi possível cadastrar o usuário: " . $e->getMessage();
         }
-        return $usuario;
+
     }
 
-    public static function remover_usuario(Usuario $usuario)
+    public static function remover_usuario($id)
     {
+        try {
+;
+            $comando_sql = 'DELETE FROM usuarios WHERE id = $1';
+            pg_query_params(self::$conn, $comando_sql, (array) $id);
 
-        $id_usuario = $usuario->get_id();
-        $comando_sql = 'DELETE FROM usuarios WHERE id = $1';
-        pg_query_params(self::$conn, $comando_sql, (array) $id_usuario);
+        } catch (Exception $e) {
+            echo "Não foi possível remover o usuário: " . $e->getMessage();
+        }
 
     }
     //apenas um comando simples q retorna o resutlado da consulta no banco de dados
     public static function listar_usuarios_do_banco()
     {
-        $comando_sql = "SELECT * FROM usuarios";
-        $resultados = pg_query(self::$conn, $comando_sql);
-        return $resultados;
+        try {
+            $comando_sql = "SELECT * FROM usuarios";
+            $resultados = pg_query(self::$conn, $comando_sql);
+            return $resultados;
+
+
+        } catch (Exception $e) {
+            echo "Não foi possível listar os usuários do banco: " . $e->getMessage();
+        }
 
     }
     //recebe como parametro um objeto do tipo usuario e escreve novamente seus atributos no banco
     public static function atualizar_usuario_no_banco(Usuario $usuario)
     {
+        try {
+            $usuario_convertido = self::usuario_para_array($usuario);
+            $comando_sql = "UPDATE usuarios SET nome = \$2, email = \$3 WHERE id = \$1";
+            pg_query_params(self::$conn, $comando_sql, $usuario_convertido);
 
-        $usuario_convertido = self::usuario_para_array($usuario);
-        $comando_sql = "UPDATE usuarios SET nome = \$2, email = \$3 WHERE id = \$1";
-        pg_query_params(self::$conn, $comando_sql, $usuario_convertido);
+        } catch (Exception $e) {
+            echo "Não foi possível atualizar o usuário no banco: " . $e->getMessage();
+        }
 
     }
     public static function retorna_usuario_por_id(int $id_usuario)
     {
+        try {
+            $comando_sql = "SELECT * FROM usuarios WHERE id = $1";
 
-        $comando_sql = "SELECT * FROM usuarios WHERE id = $1";
+            $resultado = pg_query_params(self::$conn, $comando_sql, (array) $id_usuario);
+            $linhas = pg_fetch_assoc($resultado);
 
-        $resultado = pg_query_params(self::$conn, $comando_sql, (array) $id_usuario);
-        $linhas = pg_fetch_assoc($resultado);
+            $usuario = new Usuario($linhas['id'], $linhas['nome'], $linhas['email']);
+            return $usuario;
 
-        $usuario = new Usuario($linhas['id'], $linhas['nome'], $linhas['email']);
-        return $usuario;
+        } catch (Exception $e) {
+            echo "Não foi possível retornar os dados desse usuário do banco: " . $e->getMessage();
+        }
+
 
     }
 }
