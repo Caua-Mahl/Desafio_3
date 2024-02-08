@@ -21,7 +21,7 @@ if (isset($_SESSION['respostas'])) {
     foreach ($respostas as $indice => $resposta) {
         $indice++;
         echo "Resposta para a pergunta $indice: $resposta <br>";
-        //$indice--;
+        echo "Resposta correta = <br><br>";
     }
     $acertos = Tentativa::calcula_acertos($_SESSION['jogo_id'], $_SESSION['respostas']);
     Tentativa::cadastrar_tentativa(
@@ -34,6 +34,7 @@ if (isset($_SESSION['respostas'])) {
         $_SESSION['respostas'][4],
         $acertos
     );
+    echo "<h2> Acertou $acertos de 5 perguntas</h2>";
 } else {
     echo "Nenhuma resposta foi encontrada.";
 }
