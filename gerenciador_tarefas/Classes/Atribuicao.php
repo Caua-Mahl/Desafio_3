@@ -63,59 +63,80 @@ class Atribuicao extends Conn
     }
     public static function cadastrar_atribuicao(int $usuario_id, int $tarefa_id, string $data_atribuicao)
     {
-        $query = "INSERT INTO atribuicoes (\"usuario_id\",\"tarefa_id\",\"data_atribuicao\") 
-                      VALUES ($1, $2, $3) RETURNING id";
-        $resultado = pg_query_params(self::$conn, $query, array($usuario_id, $tarefa_id, $data_atribuicao));
+        try {
+            $query = "INSERT INTO atribuicoes (\"usuario_id\",\"tarefa_id\",\"data_atribuicao\") 
+            VALUES ($1, $2, $3) RETURNING id";
+            $resultado = pg_query_params(self::$conn, $query, array($usuario_id, $tarefa_id, $data_atribuicao));
 
-        if ($resultado) {
-            $linha = pg_fetch_row($resultado);
-            $atribuicao = new Atribuicao($linha[0], $usuario_id, $tarefa_id, $data_atribuicao);
+            if ($resultado) {
+                $linha = pg_fetch_row($resultado);
+                $atribuicao = new Atribuicao($linha[0], $usuario_id, $tarefa_id, $data_atribuicao);
+                return $atribuicao;
+            }
+        } catch (Exception $e) {
+            echo "Erro ao cadastrar a atribuição: " . $e->getMessage();
         }
-        return $atribuicao;
     }
     public static function remover_atribuicao(Atribuicao $atribuicao)
     {
+        try {
+            $id_atribuicao = $atribuicao->get_id();
+            $comando_sql = 'DELETE FROM atribuicoes WHERE id = $1';
+            pg_query_params(self::$conn, $comando_sql, (array) $id_atribuicao);
 
-        $id_atribuicao = $atribuicao->get_id();
-        $comando_sql = 'DELETE FROM atribuicoes WHERE id = $1';
-        pg_query_params(self::$conn, $comando_sql, (array) $id_atribuicao);
+        } catch (Exception $e) {
+            echo "Não foi possível remover a atribuição: " . $e->getMessage();
 
+        }
     }
     public static function listar_atribuicoes_do_banco()
     {
-        $comando_sql = "SELECT * FROM atribuicoes";
-        $resultados = pg_query(self::$conn, $comando_sql);
-        return $resultados;
+        try {
+            $comando_sql = "SELECT * FROM atribuicoes";
+            $resultados = pg_query(self::$conn, $comando_sql);
+            return $resultados;
 
+        } catch (Exception $e) {
+            echo "Não foi possível listar as atribuições: " . $e->getMessage();
+        }
     }
 
     public static function atualizar_atribuicao_no_banco(Atribuicao $atribuicao)
     {
-        $atribuicao_convertido = self::atribuicao_para_array($atribuicao);
-        $comando_sql = "UPDATE atribuicoes SET tarefa_id = \$2, usuario_id = \$3, data_atribuicao = \$4 WHERE id = \$1";
-        pg_query_params(self::$conn, $comando_sql, $atribuicao_convertido);
+        try {
+            $atribuicao_convertido = self::atribuicao_para_array($atribuicao);
+            $comando_sql = "UPDATE atribuicoes SET tarefa_id = \$2, usuario_id = \$3, data_atribuicao = \$4 WHERE id = \$1";
+            pg_query_params(self::$conn, $comando_sql, $atribuicao_convertido);
+
+        } catch (Exception $e) {
+            echo "Não foi possível atualizar a atribuição: " . $e->getMessage();
+        }
+
 
     }
     public static function retorna_atribuicao_por_id(int $id_atribuicao)
     {
 
-        $comando_sql = "SELECT * FROM atribuicoes WHERE id = $1";
-        $resultado = pg_query_params(self::$conn, $comando_sql, (array) $id_atribuicao);
-        $linhas = pg_fetch_assoc($resultado);
+        try {
+            $comando_sql = "SELECT * FROM atribuicoes WHERE id = $1";
+            $resultados = pg_query_params(self::$conn, $comando_sql, (array) $id_atribuicao);
+            $linhas = pg_fetch_assoc($resultados);
+            $atribuicao = new Atribuicao($linhas['id'], $linhas['usuario_id'], $linhas['tarefa_id'], $linhas['data_atribuicao']);
 
-        $atribuicao = new Atribuicao($linhas['id'], $linhas['usuario_id'], $linhas['tarefa_id'], $linhas['data_atribuicao']);
-        return $atribuicao;
-
+            return $atribuicao;
+        } catch (Exception $e) {
+            echo "Não foi possível retornar a atribuição: " . $e->getMessage();
+        }
     }
     public static function visualiza_atribuicao_por_usuario(Usuario $usuario)
     {
-        $id_usuario = $usuario->get_id();
-        $comando_sql = "SELECT * FROM atribuicoes a  INNER JOIN tarefas t ON a.tarefa_id = t.id WHERE a.usuario_id = $1";
-
-        $resultado = pg_query_params(self::$conn, $comando_sql, (array) $id_usuario);
-        return $resultado;
+        try {
+            $id_usuario = $usuario->get_id();
+            $comando_sql = "SELECT * FROM atribuicoes a  INNER JOIN tarefas t ON a.tarefa_id = t.id WHERE a.usuario_id = $1";
+            $resultados = pg_query_params(self::$conn, $comando_sql, (array) $id_usuario);
+            return $resultados;
+        } catch (Exception $e) {
+            echo "Não foi possível retornar a atribuição desse usuário: " . $e->getMessage();
+        }
     }
-
-
-
 }

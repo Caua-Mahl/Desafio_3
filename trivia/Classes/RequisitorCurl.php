@@ -1,21 +1,19 @@
 <?php
-class RequisitorCurl
-{
+class RequisitorCurl {
     public static string $token = "https://opentdb.com/api_token.php?command=request";
     public static string $base = "https://opentdb.com/api.php?amount=5&token=";
 
-    public static function internet(): bool
-    {
-        $conectado = @fsockopen(self::$base, 8102);
-        if ($conectado) {
-            fclose($conectado);
-            return true;
-        }
-        return false;
+    public static function internet(): bool {
+        $ch = curl_init('https://www.google.com'); // se usasse o $base, iria cair naquele problema da api de bugar de chamada duas vezes, pq depois chamo dnv o mesmo url
+        curl_setopt($ch, CURLOPT_NOBODY, true); // ta excluindo corpo pra n dar pau
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $executar = curl_exec($ch);
+        $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        return ($status >= 200 && $status < 300); // se o status tiver entre 200 e 300, Tem
     }
 
-    public static function get_api(): array
-    {
+    public static function get_api(): array {
         $ch = curl_init(self::$base);
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -62,5 +60,5 @@ class RequisitorCurl
         return $decoded;
     }
 
-
+    
 }

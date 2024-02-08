@@ -1,5 +1,4 @@
 <?php
-
 require_once "Conexao/Conn.php";
 require_once "Classes/Jogo.php";
 require_once "Classes/Pergunta.php";
@@ -9,30 +8,75 @@ require_once "Classes/Usuario.php";
 require_once "Controlador/Controlador.php";
 require_once "Conexao/Conexao.php";
 
+session_start();
 
 $conexao = new Conexao("postgres", "5432", "trivia", "postgres", "exemplo");
 $conexao->conectar();
 Conn::set_conn($conexao->getConn());
 
-$usuario = Usuario::cadastrar_usuario("nome");
-$jogo = Controlador::jogar();
-//$tentativa = Tentativa::cadastrar_tentativa($usuario->getToken(),$jogo->getId(), '12', 'safsad', 'safsad', 'safsad', 'safsad', 1);
-$perguntas = $jogo->perguntas_do_jogo();
-for ($i = 0; $i < sizeof($perguntas); $i++) {
-    echo "<h2>" . $perguntas[$i]->getQuestao() . "</h2>";
-    echo "<input type=\"radio\" name=\"resposta\" value=\"" . $perguntas[$i]->getCorreta() . "\">" . $perguntas[$i]->getCorreta() . "<br>";
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['nome'])) {
+        $usuario = Usuario::cadastrar_usuario($_POST['nome']);
+        $_SESSION['usuario'] = $usuario;
+        $jogo = Controlador::jogar();
+        $_SESSION['jogo'] = $jogo;
+        $_SESSION['indice_pergunta'] = 0; // Adicionado para garantir que o índice comece em 0
 
-    if ($perguntas[$i]->getTipo() == "multiple") {
-        $erradas = explode(", ", $perguntas[$i]->getErradas());
-        for ($j = 0; $j < 3; $j++) {
-            echo "<input type=\"radio\" name=\"resposta\" value=\"" . $erradas[$j] . "\">" . $erradas[$j] . "<br>";
-        }
     } else {
-        echo "<input type=\"radio\" name=\"resposta\" value=\"" . $perguntas[$i]->getErradas() . "\">" . $perguntas[$i]->getErradas() . "<br>";
+        $jogo = $_SESSION['jogo'];
+    }
+
+    if (isset($_POST['resposta'])) {
+        $_SESSION['respostas'][$_SESSION['indice_pergunta']] = $_POST['resposta']; // vai guardar a resposta na variavel
+        echo "<br>";
+        echo "<pre>";
+        var_dump($_SESSION['respostas'][$_SESSION['indice_pergunta']]);
+        echo "<br>";
+        echo "<br>";
+        echo "<pre>";
+        var_dump($_SESSION['respostas']);
+        echo "<br>";
+    } 
+    if (isset($_POST['avançar']) && $_SESSION['indice_pergunta'] < 4) {
+        $_SESSION['indice_pergunta']++;
+    }
+    if (isset($_POST['voltar']) && $_SESSION['indice_pergunta'] > 0) {
+        $_SESSION['indice_pergunta']--;
+    }
+    if (isset($_POST['enviar']) && $_SESSION['indice_pergunta'] == 4) {
+        header("Location: resultados.php");
+        exit();
+    }
+
+    if (isset($jogo->perguntas_do_jogo()[$_SESSION['indice_pergunta']])) {
+        $pergunta = $jogo->perguntas_do_jogo()[$_SESSION['indice_pergunta']];
+        echo "<h2>" . $pergunta->getQuestao() . "</h2>";
+        echo "<form action=\"main.php\" method=\"post\">"; // Corrigido para enviar os dados para main.php
+        echo "<input type=\"radio\" name=\"resposta\" value=\"" . $pergunta->getCorreta() . "\">" . $pergunta->getCorreta() . "<br>";
+        if ($pergunta->getTipo() == "multiple") {
+            $erradas = explode(", ", $pergunta->getErradas());
+            foreach ($erradas as $errada) {
+                echo "<input type=\"radio\" name=\"resposta\" value=\"$errada\">$errada<br>"; // Corrigido o loop foreach
+            }
+        } else {
+            echo "<input type=\"radio\" name=\"resposta\" value=\"" . $pergunta->getErradas() . "\">" . $pergunta->getErradas() . "<br>";
+        }
+
+        if ($_SESSION['indice_pergunta'] > 0) {
+            echo "<input type=\"submit\" name=\"voltar\" value=\"Voltar\">";
+        }
+        if ($_SESSION['indice_pergunta'] == 4) {
+            echo "</form>";
+            echo "<form action=\"resultado.php\" method=\"post\">";
+            echo "<input type=\"submit\" name=\"enviar\" value=\"Enviar\">";
+        } else {
+            echo "<input type=\"submit\" name=\"avançar\" value=\"Avançar\">";
+        }
+        echo "</form>";
+    } else {
+        throw new Exception("Problema na lógica das perguntas.");
     }
 }
 
-//session_unset();
-//session_destroy();
-//$conexao->deletar_dados_tabelas();
+// $conexao->deletar_dados_tabelas();
 $conexao->desconectar();
