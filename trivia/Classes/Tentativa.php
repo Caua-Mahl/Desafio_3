@@ -14,7 +14,6 @@ class Tentativa extends Conn
 
     public function __construct(string $token_usuario, int $jogo_id, string $resposta_1, string $resposta_2, string $resposta_3, string $resposta_4, string $resposta_5, int $acertos)
     {
-
         $this->token_usuario = $token_usuario;
         $this->jogo_id = $jogo_id;
         $this->resposta_1 = $resposta_1;

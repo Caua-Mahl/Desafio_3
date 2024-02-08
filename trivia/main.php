@@ -21,7 +21,7 @@ function jogar_jogo($conexao)
             $usuario = Usuario::cadastrar_usuario($_POST['nome']);
             $_SESSION['usuario_token'] = $usuario->getToken();
             $_SESSION['usuario'] = $usuario;
-            $jogo = Controlador::jogar();
+            $jogo = Controlador::jogar($_SESSION['usuario_token']);
             $_SESSION['jogo_id'] = $jogo->getId();
             $_SESSION['jogo'] = $jogo;
             $_SESSION['indice_pergunta'] = 0;
@@ -31,11 +31,11 @@ function jogar_jogo($conexao)
         if (isset($_POST['resposta'])) {
             $_SESSION['respostas'][$_SESSION['indice_pergunta']] = $_POST['resposta'];
         }
-        if (isset($_POST['voltar']) && $_SESSION['indice_pergunta'] > 0) {
-            $_SESSION['indice_pergunta']--;
-        }
         if (isset($_POST['avançar']) && $_SESSION['indice_pergunta'] < 4) {
             $_SESSION['indice_pergunta']++;
+        }
+        if (isset($_POST['voltar']) && $_SESSION['indice_pergunta'] > 0) {
+            $_SESSION['indice_pergunta']--;
         }
         if (isset($_POST['enviar']) && $_SESSION['indice_pergunta'] == 4) {
             $conexao->desconectar();
@@ -48,36 +48,32 @@ function jogar_jogo($conexao)
             } else {
                 $action = 'resultado.php';
             }
-
             $pergunta = $jogo->perguntas_do_jogo()[$_SESSION['indice_pergunta']];
-
             $array_perguntas = explode(", ", $pergunta->getErradas());
             $array_perguntas[] = $pergunta->getCorreta();
             shuffle($array_perguntas);
 
-            echo "<h2>" . $pergunta->getQuestao() . "</h2>";
+            echo "<h2 style='text-align: left;'>" . "(" . $pergunta->getDificuldade() . ")  " . $pergunta->getQuestao() . "</h2> <br>";
             for ($i = 0; $i < sizeof($array_perguntas); $i++) {
-                echo "<form action=\"$action\" method=\"post\">";
-                echo "<input type=\"radio\" name=\"resposta\" value=\"" . $array_perguntas[$i] . "\">" . $array_perguntas[$i] . "<br>";
+                echo "<form class=\"form-main\" action=\"$action\" method=\"post\">";
+                echo "<ul> <input type=\"radio\" name=\"resposta\" value=\" " . $array_perguntas[$i] . " \"> " . $array_perguntas[$i] . " </ul>  <br> ";
 
             }
-            if ($_SESSION['indice_pergunta'] > 0) {
-                echo "<input type=\"submit\" name=\"voltar\" value=\"Voltar\">";
-            }
             if ($_SESSION['indice_pergunta'] < 4) {
-                echo "<input type=\"submit\" name=\"avançar\" value=\"Avançar\">";
+                echo "<input class=\"button-main\" type=\"submit\" name=\"avançar\" value=\"Avançar\">";
             }
             if ($_SESSION['indice_pergunta'] == 4) {
-                echo "<input type=\"submit\" name=\"enviar\" value=\"Enviar\">";
+                echo "<input class=\"button-main\" type=\"submit\" name=\"enviar\" value=\"Enviar\">";
+            }
+            if ($_SESSION['indice_pergunta'] > 0) {
+                echo "<input class=\"button-main\" type=\"submit\" name=\"voltar\" value=\"Voltar\">";
             }
             echo "</form>";
         }
     }
 }
-
-//$conexao->deletar_dados_tabelas();
-//$conexao->desconectar();
-
+// $conexao->deletar_dados_tabelas();
+// $conexao->desconectar();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -85,16 +81,16 @@ function jogar_jogo($conexao)
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@500&display=swap" rel="stylesheet">
-    <title>Trivia</title>
+    <title>Perguntas Trivia</title>
 </head>
 
 <body>
     <div class="container">
-        <div class="form">
+        <div class="form-main">
             <?php jogar_jogo($conexao) ?>
         </div>
     </div>

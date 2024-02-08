@@ -15,9 +15,11 @@ class RequisitorCurl
         return ($status >= 200 && $status < 300); // se o status tiver entre 200 e 300, Tem
     }
 
-    public static function get_api(): array
+    public static function get_api(string $token): array
     {
-        $ch = curl_init(self::$base);
+
+        $base = self::$base . $token;
+        $ch = curl_init($base);
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($ch);

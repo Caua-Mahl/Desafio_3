@@ -4,11 +4,11 @@ require_once "Classes/RequisitorCurl.php";
 
 class Controlador
 {
-    public static function jogar()
+    public static function jogar(string $token)
     {
         $jogo = [];
         if (RequisitorCurl::internet()) {
-            $perguntas = RequisitorCurl::get_api();
+            $perguntas = RequisitorCurl::get_api($token);
             $jogo = [];
             for ($i = 0; $i < 5; $i++) {
                 $pergunta = $perguntas["results"][$i];
@@ -28,6 +28,7 @@ class Controlador
                     throw new Exception("Não foi possível cadastrar uma pergunta");
                 }
             }
+            return $jogo = Jogo::cadastrar_jogo($jogo[0]->getId(), $jogo[1]->getId(), $jogo[2]->getId(), $jogo[3]->getId(), $jogo[4]->getId());
         }
         $conn = Conn::get_conn();
         $sql = 'SELECT id FROM perguntas ORDER BY RANDOM() LIMIT $1';
@@ -36,14 +37,11 @@ class Controlador
         if ($resultado === false) {
             throw new Exception("Erro ao buscar perguntas: " . pg_last_error($conn));
         }
-
         $IDs = [];
         while ($linha = pg_fetch_assoc($resultado)) {
             $IDs[] = $linha['id'];
         }
-
         return $jogo = Jogo::cadastrar_jogo($IDs[0], $IDs[1], $IDs[2], $IDs[3], $IDs[4]);
-
     }
     public static function get_token()
     {
@@ -52,7 +50,7 @@ class Controlador
             return $resultados['token'];
         }
         echo "Sem net, puxando do DB";
-        return bin2hex(openssl_random_pseudo_bytes(32)); //gera um token aleatorio de 64 caracteres igual o numero de caracteres q o token gera, porem pode repetir, e se repetir da pau
+        return bin2hex(openssl_random_pseudo_bytes(32));
     }
 
 }
