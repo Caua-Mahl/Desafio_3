@@ -14,22 +14,22 @@ $conexao = new Conexao("postgres", "5432", "trivia", "postgres", "exemplo");
 $conexao->conectar();
 Conn::set_conn($conexao->getConn());
 
-function jogar_jogo()
+function jogar_jogo($conexao)
 {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (isset($_POST['nome'])) {
             $usuario = Usuario::cadastrar_usuario($_POST['nome']);
+            $_SESSION['usuario_token'] = $usuario->getToken();
             $_SESSION['usuario'] = $usuario;
             $jogo = Controlador::jogar();
+            $_SESSION['jogo_id'] = $jogo->getId();
             $_SESSION['jogo'] = $jogo;
             $_SESSION['indice_pergunta'] = 0;
-
         } else {
             $jogo = $_SESSION['jogo'];
         }
         if (isset($_POST['resposta'])) {
             $_SESSION['respostas'][$_SESSION['indice_pergunta']] = $_POST['resposta'];
-
         }
         if (isset($_POST['voltar']) && $_SESSION['indice_pergunta'] > 0) {
             $_SESSION['indice_pergunta']--;
@@ -39,6 +39,7 @@ function jogar_jogo()
         }
         if (isset($_POST['enviar']) && $_SESSION['indice_pergunta'] == 4) {
             $_SESSION['respostas'][$_SESSION['indice_pergunta']] = $_POST['resposta'];
+            $conexao->desconectar();
             header("Location: resultados.php");
             exit();
         }
@@ -48,6 +49,7 @@ function jogar_jogo()
             } else {
                 $action = 'resultado.php';
             }
+
             $pergunta = $jogo->perguntas_do_jogo()[$_SESSION['indice_pergunta']];
 
             $array_perguntas = explode(", ", $pergunta->getErradas());
@@ -94,7 +96,7 @@ function jogar_jogo()
 <body>
     <div class="container">
         <div class="form">
-            <?php jogar_jogo() ?>
+            <?php jogar_jogo($conexao) ?>
         </div>
     </div>
 </body>

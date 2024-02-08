@@ -89,7 +89,7 @@ class Tentativa extends Conn
     {
         $this->acertos = $acertos;
     }
-    public static function cadastrar_tentativa(string $token_usuario, int $jogo_id, string $resposta_1, string $resposta_2, string $resposta_3, string $resposta_4, string $resposta_5, int $acertos)
+    public static function cadastrar_tentativa(string $token_usuario, int $jogo_id, string $resposta_1, string $resposta_2, string $resposta_3, string $resposta_4, string $resposta_5, int $acertos = 0)
     {
         $query = "INSERT INTO tentativa (\"token_usuario\",\"id_jogo\",\"resposta_1\",\"resposta_2\",\"resposta_3\",\"resposta_4\",\"resposta_5\",\"acertos\") 
                       VALUES ($1, $2, $3, $4, $5, $6,$7,$8)";
@@ -102,5 +102,21 @@ class Tentativa extends Conn
 
         $tentativa = new Tentativa($token_usuario, $jogo_id, $resposta_1, $resposta_2, $resposta_3, $resposta_4, $resposta_5, $acertos);
         return $tentativa;
+    }
+    public static function calcula_acertos(int $jogo_id, array $respostas)
+    {
+        $jogo = array();
+        $sql = "SELECT correta FROM jogo j INNER JOIN perguntas p  ON j.pergunta1_id = p.id or j.pergunta2_id = p.id or j.pergunta3_id = p.id or j.pergunta4_id = p.id or j.pergunta5_id = p.id   where j.id = $1";
+        $resultado = pg_query_params(self::$conn, $sql, array($jogo_id));
+        for ($i = 0; $i < 5; $i++) {
+            $jogo[$i] = pg_fetch_assoc($resultado);
+        }
+        $acertos = 0;
+        for ($i = 0; $i < 5; $i++) {
+            if ($jogo[$i]['correta'] == $respostas[$i]) {
+                $acertos++;
+            }
+        }
+        return $acertos;
     }
 }
