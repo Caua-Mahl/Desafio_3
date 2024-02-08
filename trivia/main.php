@@ -49,9 +49,11 @@ function jogar_jogo()
                 $action = 'resultado.php';
             }
             $pergunta = $jogo->perguntas_do_jogo()[$_SESSION['indice_pergunta']];
-            // $array_perguntas = explode(", ", $pergunta->getErradas());
-            // $array_perguntas[] = $pergunta->getCorreta();
 
+            $array_perguntas = explode(", ", $pergunta->getErradas());
+            $array_perguntas[] = $pergunta->getCorreta();
+            shuffle($array_perguntas);
+            //PRECISA ARRUMAR A LOGICA PARA PRINTAR O ARRAY
             echo "<h2>" . $pergunta->getQuestao() . "</h2>";
             echo "<form action=\"$action\" method=\"post\">";
             echo "<input type=\"radio\" name=\"resposta\" value=\"" . $pergunta->getCorreta() . "\">" . $pergunta->getCorreta() . "<br>";
