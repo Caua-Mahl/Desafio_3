@@ -42,7 +42,8 @@ a:hover {
     justify-content: center;
     align-items: center;
     margin-top: 4px;
-    margin-bottom: 4px;
+    margin-bottom: 100px;
+
 
 }
 
@@ -93,6 +94,18 @@ a:hover {
 
 }
 
+.button {
+    background: #229954;
+    height: 32px;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    transition: background 0.3s;
+
+}
+
 .form button:hover {
     background: #018d3e;
 }
@@ -103,16 +116,16 @@ a:hover {
     border-radius: 1px;
 }
 
-.list-tasks {
+.list-alternativas {
     margin-top: 12px;
     margin-bottom: 12px;
 }
 
-.list-tasks ul {
+.list-alternativas ul {
     list-style: none;
 }
 
-.list-tasks ul li {
+.list-alternativas ul li {
     background: #00c3ff;
     height: 54px;
     border-radius: 4px;
@@ -126,7 +139,7 @@ a:hover {
     transition: background 0.3s;
 }
 
-.list-tasks ul li:hover {
+.list-alternativas ul li:hover {
     background: #52b7ff;
 }
 

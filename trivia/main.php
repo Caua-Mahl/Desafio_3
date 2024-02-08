@@ -51,17 +51,16 @@ function jogar_jogo($conexao)
             }
 
             $pergunta = $jogo->perguntas_do_jogo()[$_SESSION['indice_pergunta']];
-            echo "<h2>" . $pergunta->getQuestao() . "</h2>";
-            echo "<form action=\"$action\" method=\"post\">";
-            echo "<input type=\"radio\" name=\"resposta\" value=\"" . $pergunta->getCorreta() . "\">" . $pergunta->getCorreta() . "<br>";
 
-            if ($pergunta->getTipo() == "multiple") {
-                $erradas = explode(", ", $pergunta->getErradas());
-                foreach ($erradas as $errada) {
-                    echo "<input type=\"radio\" name=\"resposta\" value=\"$errada\">$errada<br>";
-                }
-            } else {
-                echo "<input type=\"radio\" name=\"resposta\" value=\"" . $pergunta->getErradas() . "\">" . $pergunta->getErradas() . "<br>";
+            $array_perguntas = explode(", ", $pergunta->getErradas());
+            $array_perguntas[] = $pergunta->getCorreta();
+            shuffle($array_perguntas);
+
+            echo "<h2>" . $pergunta->getQuestao() . "</h2>";
+            for ($i = 0; $i < sizeof($array_perguntas); $i++) {
+                echo "<form action=\"$action\" method=\"post\">";
+                echo "<input type=\"radio\" name=\"resposta\" value=\"" . $array_perguntas[$i] . "\">" . $array_perguntas[$i] . "<br>";
+
             }
             if ($_SESSION['indice_pergunta'] > 0) {
                 echo "<input type=\"submit\" name=\"voltar\" value=\"Voltar\">";
@@ -76,6 +75,30 @@ function jogar_jogo($conexao)
         }
     }
 }
-jogar_jogo($conexao);
+
 //$conexao->deletar_dados_tabelas();
-$conexao->desconectar();
+//$conexao->desconectar();
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@500&display=swap" rel="stylesheet">
+    <title>Trivia</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="form">
+            <?php jogar_jogo($conexao) ?>
+        </div>
+    </div>
+</body>
+
+</html>
