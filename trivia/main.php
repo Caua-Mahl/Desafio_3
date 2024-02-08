@@ -44,15 +44,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['indice_pergunta']++;
     }
     if (isset($_POST['enviar']) && $_SESSION['indice_pergunta'] == 4) {
-        $_SESSION['respostas'][$_SESSION['indice_pergunta']] = $_POST['resposta']; // Salva a última resposta antes de redirecionar
+        $_SESSION['respostas'][$_SESSION['indice_pergunta']] = $_POST['resposta']; // vai guardar a resposta na variavel
+
         header("Location: resultados.php");
         exit();
     }
 
     if (isset($jogo->perguntas_do_jogo()[$_SESSION['indice_pergunta']])) {
+        if ($_SESSION['indice_pergunta'] < 4) {
+            $action = 'main.php';
+        } else {
+            $action = 'resultado.php';
+        }
         $pergunta = $jogo->perguntas_do_jogo()[$_SESSION['indice_pergunta']];
         echo "<h2>" . $pergunta->getQuestao() . "</h2>";
-        echo "<form action=\"main.php\" method=\"post\">"; // Corrigido para enviar os dados para main.php
+        echo "<form action=\"$action\" method=\"post\">"; // Corrigido para enviar os dados para main.php
         echo "<input type=\"radio\" name=\"resposta\" value=\"" . $pergunta->getCorreta() . "\">" . $pergunta->getCorreta() . "<br>";
 
         if ($pergunta->getTipo() == "multiple") {
@@ -63,26 +69,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             echo "<input type=\"radio\" name=\"resposta\" value=\"" . $pergunta->getErradas() . "\">" . $pergunta->getErradas() . "<br>";
         }
-
         if ($_SESSION['indice_pergunta'] > 0) {
             echo "<input type=\"submit\" name=\"voltar\" value=\"Voltar\">";
         }
-        if ($_SESSION['indice_pergunta'] == 4) {
-            echo "</form>";
-
-            echo "<form action=\"resultado.php\" method=\"post\">";
-            echo "<input type=\"submit\" name=\"enviar\" value=\"Enviar\">";
-
-        } else {
+        if ($_SESSION['indice_pergunta'] < 4) {
             echo "<input type=\"submit\" name=\"avançar\" value=\"Avançar\">";
         }
-
+        if ($_SESSION['indice_pergunta'] == 4) {
+            echo "<input type=\"submit\" name=\"enviar\" value=\"Enviar\">";
+        }
         echo "</form>";
-    } else {
-        throw new Exception("Problema na lógica das perguntas.");
     }
-
 }
-
 // $conexao->deletar_dados_tabelas();
 $conexao->desconectar();
