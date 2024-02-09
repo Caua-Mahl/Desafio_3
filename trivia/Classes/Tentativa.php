@@ -104,8 +104,8 @@ class Tentativa extends Conn
     }
     public static function calcula_acertos(array $corretas, array $respostas)
     {
-        $acertos = 0;   
-        for ($i=0; $i < 5; $i++) { 
+        $acertos = 0;
+        for ($i = 0; $i < 5; $i++) {
             echo "<br>";
             if ((substr($respostas[$i], 1, -1)) == $corretas[$i]) {
                 $acertos++;

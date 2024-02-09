@@ -20,12 +20,12 @@ function verificar_respostas()
     if (isset($_SESSION['respostas'])) {
         $_SESSION['respostas'][$_SESSION['indice_pergunta']] = $_POST['resposta'];
         $perguntas = $_SESSION['perguntas'];
-        $corretas  = $_SESSION['corretas'];
+        $corretas = $_SESSION['corretas'];
         $respostas = $_SESSION['respostas'];
-        $acertos   = 0;
+        $acertos = 0;
 
         foreach ($respostas as $indice => $resposta) {
-            if (substr($resposta,1,-1) == $corretas[$indice]) {
+            if (substr($resposta, 1, -1) == $corretas[$indice]) {
                 $acertos++;
             }
         }
@@ -44,9 +44,9 @@ function verificar_respostas()
 
         foreach ($respostas as $indice => $resposta) {
             $indice++;
-            echo "Pergunta $indice: " . $perguntas[$indice-1]. "<br>";
+            echo "Pergunta $indice: " . $perguntas[$indice - 1] . "<br>";
             echo "Resposta marcada: $resposta <br>";
-            echo "Resposta correta: " . $corretas[$indice-1] . "<br><br>";
+            echo "Resposta correta: " . $corretas[$indice - 1] . "<br><br>";
         }
     } else {
         echo "Nenhuma resposta foi encontrada.";

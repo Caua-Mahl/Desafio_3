@@ -12,7 +12,7 @@ class RequisitorCurl
         $executar = curl_exec($ch);
         $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
-        return ($status >= 200 && $status < 300); // se o status tiver entre 200 e 300, Tem
+        return !($status >= 200 && $status < 300); // se o status tiver entre 200 e 300, Tem
     }
 
     public static function get_api(string $token): array
