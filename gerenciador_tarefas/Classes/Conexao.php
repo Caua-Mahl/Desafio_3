@@ -73,6 +73,7 @@ class Conexao
     public function conectar()
     {
         $this->conn = pg_connect($this->infos_string) or die("Nao foi possivel conectar ao Banco de Dados  <br><br>");
+        echo "Conexão bem sucedida  <br><br>";
         return $this->conn;
     }
 
@@ -101,5 +102,6 @@ class Conexao
     public function desconectar(): void
     {
         pg_close($this->conn) or die("Nao foi possivel desconectar ao Banco de Dados  <br><br>");
+        echo "<br> Desconexão bem sucedida";
     }
 }

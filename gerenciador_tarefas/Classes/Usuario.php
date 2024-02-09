@@ -41,8 +41,6 @@ class Usuario extends Conn
     {
         $this->email = $email;
     }
-
-    //essa função transofrma um objeto usuário em um array e retorna o array com as infos
     public static function usuario_para_array(Usuario $usuario): array
     {
 
@@ -54,7 +52,6 @@ class Usuario extends Conn
 
         return $usuario_array;
     }
-
     public static function cadastrar_usuario(string $nome, string $email)
     {
         try {
@@ -71,15 +68,14 @@ class Usuario extends Conn
         } catch (Exception $e) {
             echo "Não foi possível cadastrar o usuário: " . $e->getMessage();
         }
-
     }
-
-    public static function remover_usuario($id)
+    public static function remover_usuario(Usuario $usuario)
     {
         try {
-;
+
+            $id_usuario = $usuario->get_id();
             $comando_sql = 'DELETE FROM usuarios WHERE id = $1';
-            pg_query_params(self::$conn, $comando_sql, (array) $id);
+            pg_query_params(self::$conn, $comando_sql, (array) $id_usuario);
 
         } catch (Exception $e) {
             echo "Não foi possível remover o usuário: " . $e->getMessage();
@@ -127,7 +123,6 @@ class Usuario extends Conn
         } catch (Exception $e) {
             echo "Não foi possível retornar os dados desse usuário do banco: " . $e->getMessage();
         }
-
 
     }
 }
